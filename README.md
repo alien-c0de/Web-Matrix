@@ -24,14 +24,11 @@ Web Matrix is a comprehensive Python-based website analysis tool that uncovers s
 - [Configuration](#-configuration)
 - [Usage](#-usage)
 - [Output](#-output)
-- [Report Features](#-report-features)
 - [API Keys](#-api-keys)
 - [Advanced Features](#-advanced-features)
 - [Troubleshooting](#-troubleshooting)
-- [Project Structure](#-project-structure)
 - [Performance](#-performance)
 - [Roadmap](#-roadmap)
-- [Contributing](#-contributing)
 - [License](#-license)
 - [Author](#-author)
 - [Acknowledgments](#-acknowledgments)
@@ -174,24 +171,6 @@ Web Matrix currently supports **36 comprehensive modules**:
 
 *Comprehensive breakdown of all 36 modules with findings*
 
-### Report Features (Add Your Images)
-
-```markdown
-<!-- Add your own screenshots here -->
-
-#### Website Health Score
-![Health Score](./images/health-score.png)
-
-#### SSL Certificate Analysis
-![SSL Analysis](./images/ssl-certificate.png)
-
-#### NMAP Vulnerability Scan
-![NMAP Scan](./images/nmap-scan.png)
-
-#### Technology Stack Detection
-![Tech Stack](./images/tech-stack.png)
-```
-
 ---
 
 ## 📋 Prerequisites
@@ -210,41 +189,13 @@ Web Matrix currently supports **36 comprehensive modules**:
 Web Matrix uses several free APIs to enhance analysis. Sign up for free accounts:
 
 1. **VirusTotal API** - [Get API Key](https://www.virustotal.com/gui/join-us)
-2. **Google Safe Browsing API** - [Get API Key](https://developers.google.com/safe-browsing/v4/get-started)
-3. **Shodan API** (Optional) - [Get API Key](https://account.shodan.io/register)
-4. **SecurityTrails API** (Optional) - [Get API Key](https://securitytrails.com/corp/api)
-
-### System Requirements
-
-- **OS**: Windows 10/11, Linux (Ubuntu 18.04+, Debian 10+, CentOS 7+)
-- **RAM**: 2GB minimum, 4GB recommended
-- **Disk Space**: 500MB for installation and reports
-- **Network**: Internet connection required for API calls
+2. **Stack behind any website API** - [Get API Key](https://api.builtwith.com)
 
 ---
 
 ## 🚀 Installation
 
-### Step 1: Clone the Repository
-
-```bash
-git clone https://github.com/yourusername/web-matrix.git
-cd web-matrix
-```
-
-### Step 2: Create Virtual Environment (Recommended)
-
-```bash
-# Windows
-python -m venv venv
-venv\Scripts\activate
-
-# Linux
-python3 -m venv venv
-source venv/bin/activate
-```
-
-### Step 3: Install Python Dependencies
+### Step 1: Install Python Dependencies
 
 ```bash
 pip install -r requirements.txt
@@ -256,7 +207,7 @@ Or install packages individually:
 pip install python-whois requests asyncio aiohttp configparser colorama dnspython scapy beautifulsoup4 pybase64 tldextract pyfiglet pyOpenSSL python3-nmap
 ```
 
-### Step 4: Install NMAP (Optional but Recommended)
+### Step 2: Install NMAP (Optional but Recommended)
 
 **Windows:**
 1. Download installer from [nmap.org/download.html](https://nmap.org/download.html)
@@ -270,18 +221,6 @@ sudo apt-get install nmap
 nmap --version
 ```
 
-**Linux (CentOS/RHEL):**
-```bash
-sudo yum install nmap
-nmap --version
-```
-
-### Step 5: Verify Installation
-
-```bash
-python main.py --help
-```
-
 ---
 
 ## ⚙️ Configuration
@@ -293,67 +232,21 @@ python main.py --help
 cd config
 ```
 
-2. Edit `config.ini` with your favorite text editor:
-```bash
-nano config.ini  # Linux
-notepad config.ini  # Windows
-```
-
-3. Add your API keys:
+2. Add your API keys:
 
 ```ini
-[General]
-VERSION = 2.0.0
-AUTHOR = Your Name
-COMPANY_NAME = Your Company
 
-[APIs]
-# VirusTotal API (Required for malware detection)
-VIRUSTOTAL_API_KEY = your_virustotal_api_key_here
+[VIRUS_TOTAL]
+ENDPOINT_URL = https://www.virustotal.com/api/v3/urls/
+API_KEY = Your_API_key
 
-# Google Safe Browsing API (Required for phishing detection)
-GOOGLE_SAFEBROWSING_API_KEY = your_google_api_key_here
-
-# Shodan API (Optional - for advanced port scanning)
-SHODAN_API_KEY = your_shodan_api_key_here
-
-# SecurityTrails API (Optional - for DNS intelligence)
-SECURITYTRAILS_API_KEY = your_securitytrails_api_key_here
-
-[Settings]
-# Timeout for HTTP requests (seconds)
-REQUEST_TIMEOUT = 10
-
-# Maximum concurrent requests
-MAX_CONCURRENT_REQUESTS = 10
-
-# Enable/Disable specific modules
-ENABLE_NMAP = true
-ENABLE_MALWARE_CHECK = true
-ENABLE_CARBON_FOOTPRINT = true
-```
-
-4. Save and exit
-
-### Configuration Options
-
-| Setting | Description | Default |
-|---------|-------------|---------|
-| `REQUEST_TIMEOUT` | HTTP request timeout in seconds | 10 |
-| `MAX_CONCURRENT_REQUESTS` | Maximum parallel API calls | 10 |
-| `ENABLE_NMAP` | Enable NMAP scanning modules | true |
-| `ENABLE_MALWARE_CHECK` | Check against malware databases | true |
-| `ENABLE_CARBON_FOOTPRINT` | Calculate environmental impact | true |
+[BUILTWITH]
+ENDPOINT_URL = https://api.builtwith.com/free1/api.json?KEY={apiKey}&LOOKUP={url}
+API_KEY = API_KEY = Your_API_key
 
 ---
 
 ## 💻 Usage
-
-### Basic Command Structure
-
-```bash
-python main.py [OPTIONS] <URL>
-```
 
 ### Analysis Without NMAP (Fast Mode)
 
@@ -361,42 +254,10 @@ python main.py [OPTIONS] <URL>
 python main.py -s https://example.com
 ```
 
-**Features:**
-- ✅ SSL/TLS analysis
-- ✅ DNS records
-- ✅ Server information
-- ✅ Security headers
-- ✅ Malware detection
-- ✅ Technology stack
-- ⏱️ **Completion Time**: 2-3 minutes
-
 ### Analysis With NMAP (Deep Scan Mode)
 
 ```bash
 python main.py -sn https://example.com
-```
-
-**Additional Features:**
-- ✅ All fast mode features
-- ✅ OS detection
-- ✅ Port scanning
-- ✅ Vulnerability assessment
-- ✅ SQL injection tests
-- ✅ XSS vulnerability checks
-- ⏱️ **Completion Time**: 8-15 minutes
-
-### Multiple Websites (Batch Mode)
-
-Create a file `websites.txt`:
-```
-https://example.com
-https://test.com
-https://demo.org
-```
-
-Run analysis:
-```bash
-python main.py -b websites.txt
 ```
 
 ### Command-Line Options
@@ -407,34 +268,11 @@ usage: main.py [-h] [-s URL] [-sn URL] [-b FILE] [-o OUTPUT] [-v]
 Web Matrix - Comprehensive Website Security Analysis
 
 optional arguments:
-  -h, --help            Show this help message and exit
-  -s URL, --scan URL    Analyze website without NMAP
-  -sn URL, --scan-nmap URL
-                        Analyze website with NMAP vulnerability scanning
-  -b FILE, --batch FILE
-                        Batch analysis from file (one URL per line)
-  -o OUTPUT, --output OUTPUT
-                        Custom output directory
-  -v, --version         Show program version
-  --verbose             Enable verbose output
-  --no-color            Disable colored output
-```
-
-### Advanced Examples
-
-**Custom output directory:**
-```bash
-python main.py -s https://example.com -o ./reports/example
-```
-
-**Verbose mode with NMAP:**
-```bash
-python main.py -sn https://example.com --verbose
-```
-
-**Batch processing without colors:**
-```bash
-python main.py -b websites.txt --no-color
+  -h, --help                Show this help message and exit
+  -s URL, --scan URL        Analyze website without NMAP
+  -sn URL, --scan-nmap URL  Analyze website with NMAP vulnerability scanning
+  -v, --version           Show program version
+  
 ```
 
 ---
@@ -447,20 +285,8 @@ All reports are generated in the `./output` directory:
 
 ```
 output/
-├── WebMatrix_example.com_15Dec2025_14-30-45.html
-├── WebMatrix_test.com_15Dec2025_14-35-22.html
-└── WebMatrix_demo.org_15Dec2025_14-40-10.html
-```
-
-### Filename Format
-
-```
-WebMatrix_[domain]_[date]_[time].html
-```
-
-**Example:**
-```
-WebMatrix_google.com_21Sep2024_12-13-55.html
+├── WebMatrix_test.com_15Dec2025_14-30-45.html
+└── Analysis_test.com_15Dec2025_14-30-45.html
 ```
 
 ### Report Structure
@@ -527,45 +353,6 @@ Reports use intuitive color coding:
 
 ---
 
-## 🔑 API Keys
-
-### Where to Get API Keys
-
-#### 1. VirusTotal API
-- **Purpose**: Malware and phishing detection
-- **Free Tier**: 500 requests/day
-- **Sign Up**: [virustotal.com/gui/join-us](https://www.virustotal.com/gui/join-us)
-- **Setup**: Copy API key to `config.ini` → `VIRUSTOTAL_API_KEY`
-
-#### 2. Google Safe Browsing API
-- **Purpose**: Phishing and malware URL checking
-- **Free Tier**: 10,000 queries/day
-- **Sign Up**: [developers.google.com/safe-browsing](https://developers.google.com/safe-browsing/v4/get-started)
-- **Setup**: Copy API key to `config.ini` → `GOOGLE_SAFEBROWSING_API_KEY`
-
-#### 3. Shodan API (Optional)
-- **Purpose**: Advanced port scanning and service detection
-- **Free Tier**: Limited queries
-- **Sign Up**: [account.shodan.io/register](https://account.shodan.io/register)
-- **Setup**: Copy API key to `config.ini` → `SHODAN_API_KEY`
-
-#### 4. SecurityTrails API (Optional)
-- **Purpose**: Historical DNS and WHOIS data
-- **Free Tier**: 50 queries/month
-- **Sign Up**: [securitytrails.com/corp/api](https://securitytrails.com/corp/api)
-- **Setup**: Copy API key to `config.ini` → `SECURITYTRAILS_API_KEY`
-
-### API Rate Limits
-
-| API | Free Tier Limit | Recommended Usage |
-|-----|----------------|-------------------|
-| VirusTotal | 500/day | Standard scans |
-| Google Safe Browsing | 10,000/day | All scans |
-| Shodan | Varies | Deep scans only |
-| SecurityTrails | 50/month | Historical data |
-
----
-
 ## 🚀 Advanced Features
 
 ### NMAP Integration
@@ -573,56 +360,11 @@ Reports use intuitive color coding:
 Web Matrix includes 6 specialized NMAP scanning modules:
 
 #### 1. OS Detection
-```bash
-# Identifies operating system and version
-nmap -O target.com
-```
-
 #### 2. Port Scanning
-```bash
-# Comprehensive port and service detection
-nmap -sV -p- target.com
-```
-
 #### 3. HTTP Vulnerability Scanning
-```bash
-# Checks for common web server vulnerabilities
-nmap --script http-vuln-* target.com
-```
-
 #### 4. SQL Injection Testing
-```bash
-# Tests for SQL injection vulnerabilities
-nmap --script http-sql-injection target.com
-```
-
 #### 5. XSS Vulnerability Detection
-```bash
-# Cross-site scripting vulnerability checks
-nmap --script http-stored-xss,http-dombased-xss target.com
-```
-
 #### 6. ShellShock Detection
-```bash
-# Tests for Bash ShellShock vulnerability
-nmap --script http-shellshock target.com
-```
-
-### Performance Optimization
-
-**Asynchronous Architecture:**
-```python
-# Modules run in parallel
-async def analyze_website(url):
-    tasks = [
-        analyze_ssl(url),
-        analyze_dns(url),
-        analyze_headers(url),
-        # ... 33+ more modules
-    ]
-    results = await asyncio.gather(*tasks)
-    return consolidate_results(results)
-```
 
 **Benefits:**
 - ⚡ 10x faster than sequential execution
@@ -665,39 +407,7 @@ sudo python main.py -sn https://example.com
 sudo setcap cap_net_raw,cap_net_admin=eip /usr/bin/nmap
 ```
 
-#### 3. API Rate Limit Exceeded
-
-**Error:** `API quota exceeded`
-
-**Solution:**
-- Wait 24 hours for quota reset
-- Upgrade to paid API tier
-- Use fewer modules temporarily
-- Implement request delays in config
-
-#### 4. SSL Certificate Verification Failed
-
-**Error:** `SSL certificate verify failed`
-
-**Solution:**
-```python
-# In config.ini, add:
-[Settings]
-VERIFY_SSL = false  # Use with caution!
-```
-
-#### 5. Timeout Errors
-
-**Error:** `Request timeout`
-
-**Solution:**
-```ini
-# Increase timeout in config.ini
-[Settings]
-REQUEST_TIMEOUT = 30  # Increase from 10 to 30 seconds
-```
-
-#### 6. Module Import Errors
+#### 2. Module Import Errors
 
 **Error:** `ModuleNotFoundError: No module named 'xyz'`
 
@@ -708,180 +418,19 @@ pip install -r requirements.txt --force-reinstall
 
 ---
 
-## 📁 Project Structure
-
-```
-web-matrix/
-│
-├── config/
-│   └── config.ini                    # Configuration file (API keys)
-│
-├── modules/
-│   ├── ssl_analyzer.py               # SSL/TLS certificate analysis
-│   ├── dns_analyzer.py               # DNS records and configuration
-│   ├── header_analyzer.py            # HTTP headers analysis
-│   ├── security_analyzer.py          # Security features check
-│   ├── nmap_scanner.py               # NMAP integration
-│   ├── malware_detector.py           # Malware and phishing detection
-│   ├── tech_detector.py              # Technology stack detection
-│   └── ... (30+ more modules)
-│
-├── utils/
-│   ├── async_helper.py               # Async utilities
-│   ├── report_generator.py           # HTML report creation
-│   ├── health_calculator.py          # Score calculation
-│   └── logger.py                     # Logging utilities
-│
-├── output/                           # Generated reports (auto-created)
-│
-├── images/                           # Screenshots and assets
-│   ├── terminal-input.png
-│   ├── summary-report.png
-│   └── detailed-analysis.png
-│
-├── main.py                           # Main entry point
-├── requirements.txt                  # Python dependencies
-├── README.md                         # This file
-├── LICENSE                           # MIT License
-└── .gitignore                        # Git ignore rules
-```
-
----
-
-## ⚡ Performance
-
-### Benchmark Results
-
-Tests conducted on a standard system (4-core CPU, 8GB RAM, 100Mbps connection):
-
-| Scan Type | Modules | Average Time | Network Requests |
-|-----------|---------|--------------|------------------|
-| Fast Scan | 30 | 2-3 minutes | ~50 requests |
-| Deep Scan | 36 | 8-15 minutes | ~100 requests |
-| Batch (10 sites) | 30 each | 20-25 minutes | ~500 requests |
-
-### Optimization Tips
-
-1. **Use Fast Mode** when NMAP isn't needed
-2. **Batch Processing** for multiple sites
-3. **Increase Timeout** for slow networks
-4. **Upgrade APIs** to paid tiers for higher limits
-5. **Local Caching** reduces repeat API calls
-
----
-
 ## 🗺️ Roadmap
 
-### Version 2.1 (Q1 2025)
+### Version 2.1 
 - [ ] Add 10 more analysis modules
 - [ ] JSON export format
 - [ ] Scheduled scanning
 - [ ] Email notifications
 - [ ] Slack/Teams integration
 
-### Version 2.5 (Q2 2025)
-- [ ] Web-based GUI
-- [ ] REST API endpoint
-- [ ] Database storage for history
-- [ ] Comparison reports (before/after)
-- [ ] PDF export
-
-### Version 3.0 (Q3 2025)
-- [ ] Docker containerization
-- [ ] CI/CD integration
-- [ ] SIEM connectors
-- [ ] Custom module support
-- [ ] Machine learning threat scoring
-
 ---
-
-## 🤝 Contributing
-
-Contributions are welcome! Here's how you can help:
-
-### Ways to Contribute
-
-1. **New Modules**: Add new analysis capabilities
-2. **Bug Fixes**: Report and fix bugs
-3. **Documentation**: Improve guides and examples
-4. **Translations**: Add language support
-5. **Testing**: Test on different platforms
-
-### Development Setup
-
-```bash
-# Fork and clone
-git clone https://github.com/yourusername/web-matrix.git
-cd web-matrix
-
-# Create feature branch
-git checkout -b feature/amazing-module
-
-# Make changes and test
-python main.py -s https://test.com
-
-# Commit and push
-git commit -m "Add amazing new module"
-git push origin feature/amazing-module
-
-# Open Pull Request
-```
-
-### Coding Standards
-
-- Follow PEP 8 style guidelines
-- Add docstrings to all functions
-- Include unit tests for new modules
-- Update README with new features
-- Test on both Windows and Linux
-
----
-
-## 🐛 Bug Reports
-
-Found a bug? Help us improve!
-
-**Please include:**
-- Python version
-- Operating system
-- NMAP version (if applicable)
-- Full error traceback
-- Steps to reproduce
-- Expected vs actual behavior
-
-**Submit issues:** [github.com/yourusername/web-matrix/issues](https://github.com/yourusername/web-matrix/issues)
-
----
-
 ## 📄 License
 
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
-
-```
-MIT License
-
-Copyright (c) 2025 Alien C00de
-
-Permission is hereby granted, free of charge, to any person obtaining a copy
-of this software and associated documentation files (the "Software"), to deal
-in the Software without restriction, including without limitation the rights
-to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-copies of the Software, and to permit persons to whom the Software is
-furnished to do so, subject to the following conditions:
-
-The above copyright notice and this permission notice shall be included in all
-copies or substantial portions of the Software.
-
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
-SOFTWARE.
-```
-
----
 
 ## 👤 Author
 
@@ -889,7 +438,7 @@ SOFTWARE.
 
 - GitHub: [@yourusername](https://github.com/alien-c0de)
 - LinkedIn: [Your Profile](https://linkedin.com/in/santosh-susveerkar/)
-- Email: alien.c00de@gmail..com
+- Email: alien.c00de@gmail.com
 
 
 ---
@@ -901,30 +450,9 @@ Special thanks to:
 - **NMAP** team for the incredible port scanning tool
 - **OWASP** for security guidelines and best practices
 - **VirusTotal** for malware detection API
-- **Google Safe Browsing** for phishing protection
+- **Google DNS** for phishing protection
 - All open-source contributors who made this possible
 - The cybersecurity community for continuous feedback
-
----
-
-## 📞 Support
-
-Need help? We're here for you!
-
-### Documentation
-- 📖 **Full Documentation**: [Wiki](https://github.com/yourusername/web-matrix/wiki)
-- 🎥 **Video Tutorials**: [YouTube Playlist](https://youtube.com/playlist)
-- 💡 **Tips & Tricks**: [Blog](https://yourblog.com/web-matrix)
-
-### Community
-- 💬 **Discussions**: [GitHub Discussions](https://github.com/yourusername/web-matrix/discussions)
-- 🐛 **Issues**: [Report Bug](https://github.com/yourusername/web-matrix/issues)
-- 💡 **Feature Requests**: [Request Feature](https://github.com/yourusername/web-matrix/issues/new?template=feature_request.md)
-
-### Direct Support
-- 📧 **Email**: support@yourwebsite.com
-- 💼 **Enterprise Support**: enterprise@yourwebsite.com
-- 🆘 **Emergency**: emergency@yourwebsite.com (24/7 for enterprise customers)
 
 ---
 
@@ -950,7 +478,7 @@ If you find Web Matrix useful, please consider giving it a star! ⭐
 
 **🕸️ Made with ❤️ for the Web Security Community**
 
-[Documentation](https://github.com/yourusername/web-matrix/wiki) · [Report Bug](https://github.com/yourusername/web-matrix/issues) · [Request Feature](https://github.com/yourusername/web-matrix/issues) · [Discuss](https://github.com/yourusername/web-matrix/discussions)
+[Documentation](https://github.com/alien-c0de/web-matrix/wiki) · [Report Bug](https://github.com/alien-c0de/web-matrix/issues) · [Request Feature](https://github.com/alien-c0de/web-matrix/issues) · [Discuss](https://github.com/alien-c0de/web-matrix/discussions)
 
 **🚀 Happy Website Analysis! 🚀**
 
