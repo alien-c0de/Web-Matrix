@@ -22,6 +22,7 @@ Web Matrix is a comprehensive Python-based website analysis tool that uncovers s
 - [Prerequisites](#-prerequisites)
 - [Installation](#-installation)
 - [Configuration](#-configuration)
+- [Usage](#-usage)
 - [Output](#-output)
 - [Report Features](#-report-features)
 - [Advanced Features](#-advanced-features)
@@ -265,10 +266,10 @@ usage: main.py [-h] [-s URL] [-sn URL] [-b FILE] [-o OUTPUT] [-v]
 Web Matrix - Comprehensive Website Security Analysis
 
 optional arguments:
-  -h, --help                Show this help message and exit
-  -s URL, --scan URL        Analyze website without NMAP
-  -sn URL, --scan-nmap URL  Analyze website with NMAP vulnerability scanning
-  -v, --version           Show program version
+  -h, --help                  Show this help message and exit
+  -s URL, --scan URL          Analyze website without NMAP
+  -sn URL, --scan-nmap URL    Analyze website with NMAP vulnerability scanning
+  -v, --version               Show program version
   
 ```
 
