@@ -234,15 +234,8 @@ cd config
 
 2. Add your API keys:
 
-```bash
-[VIRUS_TOTAL]
-ENDPOINT_URL = https://www.virustotal.com/api/v3/urls/
-API_KEY = Your_API_key
-
-[BUILTWITH]
-ENDPOINT_URL = https://api.builtwith.com/free1/api.json?KEY={apiKey}&LOOKUP={url}
-API_KEY = Your_API_key
-```
+#### Virus Total
+#### BuildWith
 ---
 
 ## 💻 Usage
