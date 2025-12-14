@@ -22,12 +22,10 @@ Web Matrix is a comprehensive Python-based website analysis tool that uncovers s
 - [Prerequisites](#-prerequisites)
 - [Installation](#-installation)
 - [Configuration](#-configuration)
-- [Usage](#-usage)
 - [Output](#-output)
-- [API Keys](#-api-keys)
+- [Report Features](#-report-features)
 - [Advanced Features](#-advanced-features)
 - [Troubleshooting](#-troubleshooting)
-- [Performance](#-performance)
 - [Roadmap](#-roadmap)
 - [License](#-license)
 - [Author](#-author)
@@ -430,7 +428,7 @@ pip install -r requirements.txt --force-reinstall
 ---
 ## 📄 License
 
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+This project is licensed under the MIT License.
 
 ## 👤 Author
 
