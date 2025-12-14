@@ -227,6 +227,7 @@ nmap --version
 ### API Keys Setup
 
 1. Navigate to the config directory:
+
 ```bash
 cd config
 ```
@@ -240,7 +241,7 @@ API_KEY = Your_API_key
 
 [BUILTWITH]
 ENDPOINT_URL = https://api.builtwith.com/free1/api.json?KEY={apiKey}&LOOKUP={url}
-API_KEY = API_KEY = Your_API_key
+API_KEY = Your_API_key
 ```
 ---
 
