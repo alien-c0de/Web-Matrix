@@ -232,8 +232,7 @@ cd config
 
 2. Add your API keys:
 
-```ini
-
+```bash
 [VIRUS_TOTAL]
 ENDPOINT_URL = https://www.virustotal.com/api/v3/urls/
 API_KEY = Your_API_key
@@ -241,7 +240,7 @@ API_KEY = Your_API_key
 [BUILTWITH]
 ENDPOINT_URL = https://api.builtwith.com/free1/api.json?KEY={apiKey}&LOOKUP={url}
 API_KEY = API_KEY = Your_API_key
-
+```
 ---
 
 ## 💻 Usage
@@ -426,6 +425,7 @@ pip install -r requirements.txt --force-reinstall
 - [ ] Slack/Teams integration
 
 ---
+
 ## 📄 License
 
 This project is licensed under the MIT License.
@@ -434,8 +434,8 @@ This project is licensed under the MIT License.
 
 **Alien C00de**
 
-- GitHub: [@yourusername](https://github.com/alien-c0de)
-- LinkedIn: [Your Profile](https://linkedin.com/in/santosh-susveerkar/)
+- GitHub: [https://github.com/alien-c0de](https://github.com/alien-c0de)
+- LinkedIn: [https://linkedin.com/in/santosh-susveerkar](https://linkedin.com/in/santosh-susveerkar/)
 - Email: alien.c00de@gmail.com
 
 
