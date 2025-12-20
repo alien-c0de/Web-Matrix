@@ -39,11 +39,6 @@ class TLS_Cipher_Suit:
             print(error_msg)
             output = await self.__empty_output(error_message)
             return output
-        
-            # error_msg = str(ex.args[0])
-            # msg = "[-] " + self.Error_Title + " => Get_TLS_Cipher_Suit : " + error_msg
-            # print(Fore.RED + Style.BRIGHT + msg + Fore.RESET + Style.RESET_ALL)
-            # return output
 
     async def __final_result(self, domain):
         """ Retrieves TLS Certificate details using SSL """

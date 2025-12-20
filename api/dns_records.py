@@ -45,11 +45,6 @@ class DNS_Records():
             print(error_msg)
             output = await self.__empty_output(error_message)
             return output
-        
-            # error_msg = str(ex.args[0])
-            # msg = f"[-] {self.Error_Title} => Get_DNS_Records : {error_msg}"
-            # print(Fore.RED + Style.BRIGHT + msg + Fore.RESET + Style.RESET_ALL)
-            # return error_msg
 
     async def __final_result(self, domain):
         record_types = ["A", "AAAA", "MX", "NS", "CNAME", "TXT"]

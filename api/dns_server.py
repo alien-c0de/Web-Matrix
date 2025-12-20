@@ -1,13 +1,11 @@
 import aiohttp
 import asyncio
-import socket
 from colorama import Fore, Style
 from time import perf_counter
 import traceback
 from util.config_uti import Configuration
 from util.report_util import Report_Utility
 from util.issue_config import Issue_Config
-
 
 class DNS_Server():
     Error_Title = None
@@ -18,61 +16,47 @@ class DNS_Server():
         self.domain = domain
 
     async def Get_DNS_Server(self):
+
         config = Configuration()
         self.Error_Title = config.DNS_SERVER
         DoH = "No"
         output = []
 
         try:
-            # start_time = perf_counter()
             doh_url = f"https://{self.ip_address}/dns-query"
+            
+            # Set a timeout to prevent hanging on both Linux and Windows
+            timeout = aiohttp.ClientTimeout(total=5)
 
-            async with aiohttp.ClientSession() as session:
+            async with aiohttp.ClientSession(timeout=timeout) as session:
                 try:
-                    async with session.get(doh_url, timeout = 5) as response:
+                    async with session.get(doh_url) as response:
                         if response.status == 200:
                             DoH = "Yes"
-                except (aiohttp.ClientConnectorError, asyncio.TimeoutError):
+                
+                except (aiohttp.ClientError, asyncio.TimeoutError, ConnectionResetError, OSError):
+                    # Silently handle the failure (common in scanning) and return the "No" table
                     output = await self.__html_table(DoH)
-                    # print(f"✅ {config.MODULE_DNS_SERVER} has been successfully completed in {round(perf_counter() - start_time, 2)} seconds.")
                     print(f"✅ {config.MODULE_DNS_SERVER} has been successfully completed.")
                     return output
 
             return await self.__html_table(DoH)
 
-        except (socket.herror, UnicodeError) as ex:
-            error_type, error_message, tb = ex.__class__.__name__, str(ex), traceback.extract_tb(ex.__traceback__)
-            error_details = tb[-1]  # Get the last traceback entry (most recent call)
+        except Exception as ex:
+            # This is your generic crash handler for unexpected logic errors
+            error_type = ex.__class__.__name__
+            error_message = str(ex)
+            tb = traceback.extract_tb(ex.__traceback__)
+            error_details = tb[-1]
+            
             file_name = error_details.filename
             method_name = error_details.name
             line_number = error_details.lineno
 
             error_msg = f"❌ {self.Error_Title} => ERROR in method '{method_name}' at line {line_number} : {error_type}: {error_message}"
-            print(error_msg)
+            print(Fore.RED + Style.BRIGHT + error_msg + Fore.RESET + Style.RESET_ALL)
             output = await self.__empty_output(error_message)
             return output
-        
-            # error_msg = e.strerror
-            # msg = "[-] " + self.Error_Title + " => Get_DNS_Server : " + error_msg
-            # print(Fore.RED + Style.BRIGHT + msg + Fore.RESET + Style.RESET_ALL)
-            # output = await self.__html_table(DoH)
-            # return output
-        except Exception as ex:
-            error_type, error_message, tb = ex.__class__.__name__, str(ex), traceback.extract_tb(ex.__traceback__)
-            error_details = tb[-1]  # Get the last traceback entry (most recent call)
-            file_name = error_details.filename
-            method_name = error_details.name
-            line_number = error_details.lineno
-
-            error_msg = f"❌ {self.Error_Title} => ERROR in method '{method_name}' at line {line_number} in file '{file_name}': {error_type}: {error_message}"
-            print(Fore.RED + Style.BRIGHT + error_msg + Fore.RESET + Style.RESET_ALL)
-            return output
-        
-            # error_msg = str(ex.args[0])
-            # msg = "[-] " + self.Error_Title + " => Get_DNS_Server_Info : " + error_msg
-            # print(Fore.RED + Style.BRIGHT + msg + Fore.RESET + Style.RESET_ALL)
-            # output = await self.__html_table(DoH)
-            # return output
 
     async def __html_table(self, DoH):
         rep_data = []

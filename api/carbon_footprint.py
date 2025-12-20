@@ -44,11 +44,6 @@ class Carbon_Footprint:
             output = await self.__empty_output(error_message)
             return output
 
-            # error_msg = str(ex.args[0])
-            # msg = "[-] " + self.Error_Title + " => Get_Carbon_Footprint : " + error_msg
-            # print(Fore.RED + Style.BRIGHT + msg + Fore.RESET + Style.RESET_ALL)
-            # return output
-
     async def __get_html_size(self, url):
         try:
             async with aiohttp.ClientSession() as session:

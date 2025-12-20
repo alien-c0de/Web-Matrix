@@ -6,8 +6,6 @@ from util.config_uti import Configuration
 from util.report_util import Report_Utility
 from util.issue_config import Issue_Config
 
-
-
 class Firewall_Detection():
     Error_Title = None
 
@@ -74,11 +72,6 @@ class Firewall_Detection():
             print(error_msg)
             output = await self.__empty_output(error_message)
             return output
-        
-            # error_msg = str(ex.args[0])
-            # msg = "[-] " + self.Error_Title + " => Get_Firewall : " + error_msg
-            # print(Fore.RED + Style.BRIGHT + msg + Fore.RESET + Style.RESET_ALL)
-            # return output
 
     async def __html_table(self, data):
         rep_data = []

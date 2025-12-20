@@ -34,11 +34,6 @@ class Redirect_Chain():
             print(error_msg)
             output = await self.__empty_output(error_message)
             return output
-        
-            # error_msg = str(ex.args[0])
-            # msg = "[-] " + self.Error_Title + " => Get_Redirect_Chain : " + error_msg
-            # print(Fore.RED + Style.BRIGHT + msg + Fore.RESET + Style.RESET_ALL)
-            # return output
 
     # THIS IS FINAL RESULT FUNCTION TO GET RESULT OF ALL FUNCTION
     async def __final_result(self):

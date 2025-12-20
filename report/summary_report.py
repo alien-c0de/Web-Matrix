@@ -508,7 +508,7 @@ class Summary_Report:
             os.system(f'xdg-open "{html_report}"')
 
         print(
-            Fore.GREEN + Style.BRIGHT + f"\n📂 HTML" + Fore.WHITE + Style.BRIGHT,
+            Fore.GREEN + Style.BRIGHT + f"\n📂 HTML Report" + Fore.WHITE + Style.BRIGHT,
             filenameH,
             Fore.GREEN + Style.BRIGHT + f"File Is Ready",
             Fore.RESET,

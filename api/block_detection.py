@@ -87,10 +87,6 @@ class Block_Detection:
             output = await self.__empty_output(error_message)
             return output
         
-            # msg = f"[-] {self.Error_Title} => Get_Block_Detection : {str(ex)}"
-            # print(Fore.RED + Style.BRIGHT + msg + Fore.RESET + Style.RESET_ALL)
-            # return output
-
     async def __check_domain_against_dns_servers(self):
         """Runs DNS checks concurrently for all servers."""
         tasks = [self.__check_domain_against_dns_server(server) for server in self.DNS_SERVERS]

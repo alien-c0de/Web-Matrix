@@ -87,10 +87,10 @@ async def Main():
         msg = "[-] " + "Main Error: Reading Error, " + error_msg
         print(Fore.RED + Style.BRIGHT + msg + Fore.RESET + Style.RESET_ALL)
         
-    print(Fore.YELLOW + Style.BRIGHT + f"⏱️  Total Time Taken: {round(perf_counter() - start_time, 2)} Seconds.", flush=True)
+    print(Fore.YELLOW + Style.BRIGHT + f"\n⏱️ Total Time Taken: {round(perf_counter() - start_time, 2)} Seconds.", flush=True)
     print(Style.RESET_ALL)
     if config.REPORT_FOOTER.upper() == "YES":
-        print(Fore.YELLOW + f"📢 {config.FOOTER_OWNER_TITLE} 👽: {config.AUTHOR} Ver: {config.VERSION} © {config.YEAR }", flush=True)
+        print(Fore.YELLOW + f"📢 {config.FOOTER_OWNER_TITLE} {config.AUTHOR} Ver: {config.VERSION} © {config.YEAR }", flush=True)
         print(Fore.YELLOW + f"📥 {config.EMAIL} ", flush=True)
         print(Fore.YELLOW + f"🚀 {config.GITHUB}", flush=True)
         print(Style.RESET_ALL)

@@ -6,7 +6,6 @@ from cryptography import x509
 from cryptography.x509.oid import NameOID
 from cryptography.hazmat.backends import default_backend
 import hashlib
-import certifi
 from datetime import datetime
 from time import perf_counter
 import traceback
@@ -26,7 +25,6 @@ class SSL_Certificate():
 
     # Function to fetch and extract certificate details
     async def Get_SSL_Certificate(self, port: int = 443):
-
         config = Configuration()
         self.Error_Title = config.SSL_CERTIFICATE
         output = []
@@ -85,10 +83,6 @@ class SSL_Certificate():
             output = await self.__empty_output(error_message)
             return output
 
-            # error_msg = str(ex.args[0])
-            # msg = "[-] " + self.Error_Title + " => Get_SSL_Certificate : " + error_msg
-            # print(Fore.RED + Style.BRIGHT + msg + Fore.RESET + Style.RESET_ALL)
-            # return output
         finally:
             connection.close()
 
@@ -191,25 +185,29 @@ class SSL_Certificate():
         rep_data.append(html)
         return rep_data
 
-    async def __load_trusted_organizations(self):
-        trusted_organizations = set()
-        with open(certifi.where(), "r") as f:
-            cert_data = f.read()
-            certs = cert_data.split("-----END CERTIFICATE-----")
-            for cert in certs:
-                cert += "-----END CERTIFICATE-----"
-                if "-----BEGIN CERTIFICATE-----" in cert:
-                    x509 = crypto.load_certificate(crypto.FILETYPE_PEM, cert)
-                    issuer = x509.get_issuer()
-                    for name, value in issuer.get_components():
-                        if name.decode() == "O":
-                            trusted_organizations.add(value.decode())
-                            break
-        return trusted_organizations
+    async def __load_trusted_organizations(self, port=443):
+        try:
+            context = ssl.create_default_context()
 
-    async def __is_issuer_organization_trusted(self, issuer_organization):
-        trusted_organizations = await self.__load_trusted_organizations()
-        return issuer_organization in trusted_organizations
+            with socket.create_connection((self.domain, port), timeout=5) as sock:
+                with context.wrap_socket(sock, server_hostname = self.domain) as ssock:
+                    cert_bin = ssock.getpeercert(binary_form=True)
+
+            cert = x509.load_der_x509_certificate(cert_bin, default_backend())
+
+            # Self-signed check
+            return cert.issuer == cert.subject
+
+        except ssl.SSLError:
+            # TLS failed, cannot determine self-signed reliably
+            return False
+
+        except Exception:
+            return False
+
+    # async def __is_issuer_organization_trusted(self, issuer_organization):
+    #     trusted_organizations = await self.__load_trusted_organizations()
+    #     return issuer_organization in trusted_organizations
 
     async def __ssl_score(self, subject, issuer, expire, renew, serial_number, fingerprint, TLS_Web_Server, TLS_Web_Client):
         score = 0
@@ -230,7 +228,8 @@ class SSL_Certificate():
             suggestions.append(Issue_Config.SUGGESTION_SSL_SUBJECT)
 
         # Check Issuer validity
-        trusted_issuers = await self.__is_issuer_organization_trusted(issuer)  # Example trusted CAs
+        # trusted_issuers = await self.__is_issuer_organization_trusted(issuer)  # Example trusted CAs
+        trusted_issuers = await self.__load_trusted_organizations()
         if trusted_issuers:
             score += 1
         else:

@@ -40,11 +40,6 @@ class Mail_Records:
             print(error_msg)
             output = await self.__empty_output(error_message)
             return output
-        
-            # error_msg = str(ex.args[0])
-            # msg = "[-] " + self.Error_Title + " => Get_Mail_Records : " + error_msg
-            # print(Fore.RED + Style.BRIGHT + msg + Fore.RESET + Style.RESET_ALL)
-            # return output
 
     async def __fetch_dns_records(self, domain):
         """Fetches MX, TXT, and other email security records asynchronously."""

@@ -42,11 +42,6 @@ class Server_Status():
             print(error_msg)
             output = await self.__empty_output(error_message)
             return output
-        
-            # error_msg = str(ex.args[0])
-            # msg = "[-] " + self.Error_Title + " => Get_Server_Status : " + error_msg
-            # print(Fore.RED + Style.BRIGHT + msg + Fore.RESET + Style.RESET_ALL)
-            # return output
 
     async def __html_table(self, IsUp, status, response_time):
         rep_data = []

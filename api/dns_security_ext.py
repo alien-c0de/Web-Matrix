@@ -81,12 +81,6 @@ class DNS_Security_Ext:
             output = await self.__empty_output(error_message)
             return output
 
-            # error_msg = str(ex.args[0])
-            # msg = "[-] " + self.Error_Title + " => Get_DNS_Security_Ext : " + error_msg
-            # print(Fore.RED + Style.BRIGHT + msg + Fore.RESET + Style.RESET_ALL)
-            # return output
-
-
     async def __fetch_dns_record(self, session, domain, dns_type, url):
         new_url = url.replace("{domain}", domain).replace("{dns_type}", dns_type)
         headers = {'Accept': 'application/dns-json'}

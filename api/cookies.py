@@ -1,6 +1,6 @@
 from colorama import Fore, Style
 from datetime import datetime, timezone
-import datetime
+from datetime import datetime
 import re
 from time import perf_counter
 import traceback
@@ -46,11 +46,6 @@ class Cookies():
             print(error_msg)
             output = await self.__empty_output(error_message)
             return output
-
-            # error_msg = str(ex.args[0])
-            # msg = "[-] " + self.Error_Title + "=> Get_Cookies : " + error_msg
-            # print(Fore.RED + Style.BRIGHT + msg + Fore.RESET + Style.RESET_ALL)
-            # return msg
 
     async def __html_cookies_table(self, cookie_info):
         rep_data = []
@@ -114,7 +109,7 @@ class Cookies():
         issues = []
         suggestions = []
         html_tags = ""
-
+        
         if cookie:
             session_name  = cookie[0][0] 
             session_value = cookie[0][1]
@@ -122,53 +117,71 @@ class Cookies():
             path = cookie[0][3]
             expires = cookie[0][4]
             secure = cookie[0][5]
-
+            
             # Session Name - Should not be empty or generic
             if not session_name or session_name == 'session':
                 issues.append(Issue_Config.ISSUE_COOKIES_SESSION_NAME)
                 suggestions.append(Issue_Config.SUGGESTION_COOKIES_SESSION_NAME)
             else:
                 score += 1
-
+            
             # Session ID - Should not be simple (For simplicity, we will use regex)
             if not session_value or re.match(r'^[a-zA-Z0-9]{8,}$', session_value) is None:
                 issues.append(Issue_Config.ISSUE_COOKIES_SESSION_VALUE)
                 suggestions.append(Issue_Config.SUGGESTION_COOKIES_SESSION_VALUE)
             else:
                 score += 1
-
+            
             # Expires - Should not be far-off date or missing
-            if not expires or datetime.strptime(expires, "%a, %d-%b-%Y %H:%M:%S GMT") < datetime.now():
+            if not expires:
                 issues.append(Issue_Config.ISSUE_COOKIES_EXPIRES)
                 suggestions.append(Issue_Config.SUGGESTION_COOKIES_EXPIRES)
             else:
-                score += 1
-
+                try:
+                    # Parse the expiration date
+                    expire_date = datetime.strptime(expires, "%a, %d-%b-%Y %H:%M:%S GMT")
+                    # Check if expired
+                    if expire_date < datetime.now():
+                        issues.append(Issue_Config.ISSUE_COOKIES_EXPIRES)
+                        suggestions.append(Issue_Config.SUGGESTION_COOKIES_EXPIRES)
+                    else:
+                        score += 1
+                except (ValueError, TypeError):
+                    # Invalid date format
+                    issues.append(Issue_Config.ISSUE_COOKIES_EXPIRES)
+                    suggestions.append(Issue_Config.SUGGESTION_COOKIES_EXPIRES)
+            
             # Path - Should not be overly broad (must be specific like `/app` or `/secure`)
             if path == '/' or not path:
                 issues.append(Issue_Config.ISSUE_COOKIES_PATH)
                 suggestions.append(Issue_Config.SUGGESTION_COOKIES_PATH)
             else:
                 score += 1
-
+            
             # Domain - Should be a specific domain, not localhost or too general
             if not domain or domain in ['localhost', '127.0.0.1', '']:
                 issues.append(Issue_Config.ISSUE_COOKIES_DOMAIN)
                 suggestions.append(Issue_Config.SUGGESTION_COOKIES_DOMAIN)
             else:
                 score += 1
-
+            
             # Secure - Should be True
             if secure != True:
                 issues.append(Issue_Config.ISSUE_COOKIES_SECURE)
                 suggestions.append(Issue_Config.SUGGESTION_COOKIES_SECURE)
             else:
                 score += 1
-
+        
         percentage_score = (score / max_score) * 100
         report_util = Report_Utility()
-        html_tags = await report_util.analysis_table(Configuration.ICON_COOKIES, Configuration.MODULE_COOKIES, issues, suggestions, int(percentage_score))
-
+        html_tags = await report_util.analysis_table(
+            Configuration.ICON_COOKIES, 
+            Configuration.MODULE_COOKIES, 
+            issues, 
+            suggestions, 
+            int(percentage_score)
+        )
+        
         return int(percentage_score), html_tags
     
     async def __empty_output(self, error):
