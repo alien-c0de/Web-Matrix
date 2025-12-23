@@ -12,12 +12,24 @@ async def Main():
 
     config = Configuration()
     # Parser to take the arguments
-    parser = argparse.ArgumentParser(description="Python Tool: WebSite Details")
-    parser.add_argument("-s", "--Single_Site", help="Option To Search Single Website Details e.g. python main.py -s website_name")
-    parser.add_argument("-sn", "--With_NMAP", help="Option To Search Single Website Details With Nmap e.g. python main.py -sn website_name")
-    parser.add_argument("-m", "--Mode", help="Option To Select Report Display Mode e.g. python main.py -sn website_name")
-    parser.add_argument("-md", "--Multi_Site", help="Option To Search Multiple Website Details e.g. python main.py -m Site_list.txt")
-    parser.add_argument("-v", "--version", help="Show Tool Version", action="store_true")
+    parser = argparse.ArgumentParser(description="🕸️ Web Matrix - Comprehensive Website Security Analysis Tool | Analyze SSL, DNS, vulnerabilities, and 36+ security modules")
+    parser.add_argument("-s", "--Single_Site", help="""Perform standard security analysis on a single website without NMAP scanning.
+                                                    Example: python main.py -s https://example.com -m 1""")
+    parser.add_argument("-sn", "--With_NMAP", help="""Perform deep security analysis including NMAP vulnerability scanning.
+                                                    Requires: NMAP installed | Example: python main.py -sn https://example.com -m 1""")
+    parser.add_argument("-m", "--Mode", help="""Select HTML report display theme for better readability.
+                                            Options: 0 = Light Mode (white background, ideal for printing)
+                                                     1 = Dark Mode (dark theme, easy on eyes, default)
+                                            Example: python main.py -s https://example.com -m 0""")
+    parser.add_argument("-md", "--Multi_Site", help="""Perform batch analysis on multiple websites from a text file.
+                                                    File format: One URL per line (http:// or https://).
+                                                    Generates separate reports for each website with individual health scores.
+                                                    Example: python main.py -md websites.txt -m 1
+                                                    Sample file content:
+                                                        https://example1.com
+                                                        https://example2.com
+                                                        http://example3.org""")
+    parser.add_argument("-v", "--version", help="Display Web Matrix version, author information, and system details", action="store_true")
     args = parser.parse_args()
 
     start_time = perf_counter()
@@ -66,15 +78,69 @@ async def Main():
             await eng.Start_Engine()
             
         elif args.help:
-            print(Fore.GREEN + Style.BRIGHT + f"[*] Usage: main.py [-S For_Single_Website -m Multi_Website] [-v VERSION] [-h HELP]")
-            print(Fore.GREEN + Style.BRIGHT + f"[*] Options:")
-            print(Fore.GREEN + Style.BRIGHT + f"        -s, --Please Provide The Name Of The Website To Get The Details.")
-            print(Fore.GREEN + Style.BRIGHT + f"        -m, --Please Provide The List Of Websites In txt File to Get The Details.")
-            print(Fore.GREEN + Style.BRIGHT + f"        -v, --version  Show Program Version")
-            print(Fore.GREEN + Style.BRIGHT + f"        -h, --help Show This Help Message And Exit")
-            print(Fore.GREEN + Style.BRIGHT + f"[*] To execute code using the Python interpreter - python main.py -s <website name> -m <list of websites in txt file>")
-            print(Fore.GREEN + Style.BRIGHT + f"[*] To execute code using the Web_Data.exe - Web_Data -s <website name> -m <list of websites in txt file>")
-            print(Fore.GREEN + Style.BRIGHT + f"[*] Check the version - python main.py -v\n")
+            print(Fore.CYAN + Style.BRIGHT + "\n" + "="*70)
+            print(Fore.GREEN + Style.BRIGHT + "🕸️  WEB MATRIX - USAGE GUIDE")
+            print(Fore.CYAN + Style.BRIGHT + "="*70 + "\n")
+            
+            # Usage
+            print(Fore.YELLOW + Style.BRIGHT + "📋 USAGE:")
+            print(Fore.WHITE + "   python main.py [-s URL | -sn URL | -md FILE] [-m MODE] [-v] [-h]\n")
+            
+            # Scan Options
+            print(Fore.YELLOW + Style.BRIGHT + "🔍 SCAN OPTIONS:")
+            print(Fore.GREEN + "   -s,  --Single_Site" + Fore.WHITE + "    Analyze single website (standard scan)")
+            print(Fore.WHITE + "                          Example: python main.py -s https://example.com -m 1\n")
+            
+            print(Fore.GREEN + "   -sn, --With_NMAP" + Fore.WHITE + "      Analyze with NMAP vulnerability scanning")
+            print(Fore.WHITE + "                          Example: python main.py -sn https://example.com -m 1\n")
+            
+            print(Fore.GREEN + "   -md, --Multi_Site" + Fore.WHITE + "     Batch analyze multiple websites from file")
+            print(Fore.WHITE + "                          Example: python main.py -md websites.txt\n")
+            
+            # Display Options
+            print(Fore.YELLOW + Style.BRIGHT + "🎨 DISPLAY OPTIONS:")
+            print(Fore.GREEN + "   -m,  --Mode" + Fore.WHITE + "           Select report theme (0=Light, 1=Dark)")
+            print(Fore.WHITE + "                          Example: python main.py -s https://example.com -m 0\n")
+            
+            # Information
+            print(Fore.YELLOW + Style.BRIGHT + "ℹ️  INFORMATION:")
+            print(Fore.GREEN + "   -v,  --version" + Fore.WHITE + "        Show program version and exit")
+            print(Fore.GREEN + "   -h,  --help" + Fore.WHITE + "           Show this help message and exit\n")
+            
+            # Quick Examples
+            print(Fore.YELLOW + Style.BRIGHT + "⚡ QUICK EXAMPLES:")
+            print(Fore.CYAN + "   Standard scan:")
+            print(Fore.WHITE + "      python main.py -s https://example.com -m 1\n")
+            
+            print(Fore.CYAN + "   Deep scan with NMAP:")
+            print(Fore.WHITE + "      python main.py -sn https://example.com -m 0\n")
+            
+            print(Fore.CYAN + "   Batch scanning:")
+            print(Fore.WHITE + "      python main.py -md websites.txt -m 1\n")
+            
+            print(Fore.CYAN + "   Check version:")
+            print(Fore.WHITE + "      python main.py -v\n")
+            
+            # Output Location
+            print(Fore.YELLOW + Style.BRIGHT + "📁 OUTPUT:")
+            print(Fore.WHITE + "   Reports saved in: " + Fore.GREEN + "./output/" + Fore.WHITE + " directory")
+            print(Fore.WHITE + "   Files: WebMatrix_[domain]_[timestamp].html\n")
+            
+            # Footer
+            print(Fore.CYAN + Style.BRIGHT + "="*70)
+            print(Fore.GREEN + Style.BRIGHT + "🚀 For more info: https://github.com/alien-c0de/web-matrix")
+            print(Fore.CYAN + Style.BRIGHT + "="*70 + "\n" + Style.RESET_ALL)
+
+
+            # print(Fore.GREEN + Style.BRIGHT + f"[*] Usage: main.py [-s For_Single_Website -m Multi_Website] [-v VERSION] [-h HELP]")
+            # print(Fore.GREEN + Style.BRIGHT + f"[*] Options:")
+            # print(Fore.GREEN + Style.BRIGHT + f"        -s, --Please Provide The Name Of The Website To Get The Details.")
+            # print(Fore.GREEN + Style.BRIGHT + f"        -m, --Please Provide The List Of Websites In txt File to Get The Details.")
+            # print(Fore.GREEN + Style.BRIGHT + f"        -v, --version  Show Program Version")
+            # print(Fore.GREEN + Style.BRIGHT + f"        -h, --help Show This Help Message And Exit")
+            # print(Fore.GREEN + Style.BRIGHT + f"[*] To execute code using the Python interpreter - python main.py -s <website name> -m <list of websites in txt file>")
+            # print(Fore.GREEN + Style.BRIGHT + f"[*] To execute code using the Web_Data.exe - Web_Data -s <website name> -m <list of websites in txt file>")
+            # print(Fore.GREEN + Style.BRIGHT + f"[*] Check the version - python main.py -v\n")
             
         elif args.version:
             print(Fore.GREEN + Style.BRIGHT + f"[*] {config.TOOL_NAME}  Version: " + config.VERSION + "\n")
