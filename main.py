@@ -39,8 +39,8 @@ async def Main():
     else:
         os.system('clear')
     
-    Terminal_header = pyfiglet.figlet_format(config.TOOL_NAME, font="ogre")
-    print(Fore.CYAN + Style.BRIGHT + Terminal_header + Fore.RESET + Style.RESET_ALL)
+    Terminal_header = pyfiglet.figlet_format(config.TOOL_NAME, font="ansi_regular")
+    print(Fore.LIGHTGREEN_EX + Style.BRIGHT + Terminal_header + Fore.RESET + Style.RESET_ALL)
 
     # print(Fore.CYAN + Style.BRIGHT + f"""\n
     #  __    __       _                                _  _  _  

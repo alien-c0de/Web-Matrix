@@ -79,6 +79,7 @@ class Analysis_Report:
                                 .header-top {
                                     display: flex;
                                     align-items: center;
+                                    justify-content: center;
                                     gap: 20px;
                                     margin-bottom: 20px;
                                 }
@@ -101,6 +102,12 @@ class Analysis_Report:
                                     font-weight: 400;
                                     opacity: 0.9;
                                     margin: 8px 0;
+                                    text-align: center;
+                                }
+                                
+                                .website-link-container {
+                                    text-align: right;
+                                    margin-top: 15px;
                                 }
                                 
                                 .header h3 a {
@@ -126,6 +133,7 @@ class Analysis_Report:
                                 .timestamp {
                                     display: flex;
                                     align-items: center;
+                                    justify-content: flex-end;
                                     gap: 10px;
                                     padding: 20px 40px;
                                     background: #f7fafc;
@@ -351,6 +359,17 @@ class Analysis_Report:
                                     .score-legend {
                                         grid-template-columns: 1fr;
                                     }
+                                    .header-top {
+                                        flex-direction: column;
+                                        text-align: center;
+                                    }
+                                    .website-link-container {
+                                        text-align: center;
+                                    }
+                                    .timestamp {
+                                        justify-content: center;
+                                        text-align: center;
+                                    }
                                 }
                             </style>
                         </head>""")
@@ -411,12 +430,14 @@ class Analysis_Report:
                                         <h2>""" + config.ANALYSIS_REPORT_HEADER + """</h2>
                                     </div>
                                 </div>
-                                <h3>
-                                    <a href=""" + website + """ target="_blank">
-                                        <i class="fas fa-external-link-alt"></i>
-                                        """ + website + """
-                                    </a>
-                                </h3>
+                                <div class="website-link-container">
+                                    <h3>
+                                        <a href=""" + website + """ target="_blank">
+                                            <i class="fas fa-external-link-alt"></i>
+                                            """ + website + """
+                                        </a>
+                                    </h3>
+                                </div>
                             </div>
                         </div>
                         

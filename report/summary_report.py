@@ -75,9 +75,6 @@ class Summary_Report:
 
     async def _extract_progress_from_html(self, html_content):
         """Extract the progress percentage from HTML content."""
-        # Simulate an asynchronous operation if needed
-        # await asyncio.sleep(0)  # No actual async operation here, but for demonstration
-
         soup = BeautifulSoup(html_content, 'html.parser')
         progress_div = soup.find('div', class_='progress')
         if progress_div:
@@ -91,7 +88,6 @@ class Summary_Report:
                          nmap_ops, mode = 1):
 
         config = Configuration()
-        # report_timestamp = str(time.strftime("%A %d-%b-%Y %H:%M:%S", self.timestamp))
         report_timestamp = self.timestamp.strftime("%A %d-%b-%Y %H:%M:%S")
         if nmap_ops:
             Analysis_report = "%s_%s_%s_%s.html" % (config.ANALYSIS_REPORT_FILE_NAME, self.domain, config.REPORT_NMAP_FILE_NAME, self.timestamp.strftime("%d%b%Y_%H-%M-%S"))
@@ -119,10 +115,10 @@ class Summary_Report:
                 <body>
                 <div class="header">
                     <h1> <i class="fas fa-user-secret icon"></i> {config.REPORT_HEADER} </h1>
-                    <h2 align="right"; margin-right: 40px; style="color:#00FF00;"> <a href= "{website}" target="_blank"> {website} </a></h2>
+                    <h2 align="right"; margin-right: 40px; style="color:rgb(214, 214, 238);"> <a href= "{website}" target="_blank"> {website} </a></h2>
                 </div>
                 <div class="date">
-                    <h3 align="right"; margin-right: 20px; style="color:blue;"><i class="far fa-clock"></i> Report Generated: {report_timestamp}</h3>
+                    <h3 align="right"; margin-right: 20px; style="color:whitesmoke;"><i class="far fa-clock"></i> Report Generated: {report_timestamp}</h3>
                 </div>
                 <div class="ranking-container">
                     <h1> {config.REPORT_RANK_PANAL} <i class="fas fa-heartbeat"></i></h1>
@@ -517,6 +513,7 @@ class Summary_Report:
     async def dark_mode(self):
         CSS = """<style>
             @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
+            @import url('https://fonts.googleapis.com/css2?family=Cascadia+Mono:wght@400;600;700&display=swap');
             
             :root {
                 --primary-color: #00ff88;
@@ -555,7 +552,7 @@ class Summary_Report:
                 border: 1px solid var(--border-color);
                 border-radius: 16px;
                 padding: 10px 20px;
-                margin: 0 20px 30px;
+                margin: 0 10px 20px;
                 box-shadow: var(--shadow);
                 position: relative;
                 overflow: hidden;
@@ -578,6 +575,7 @@ class Summary_Report:
                 margin-bottom: 15px;
                 display: flex;
                 align-items: center;
+                justify-content: center;
                 gap: 15px;
             }
             
@@ -681,8 +679,8 @@ class Summary_Report:
             
             .progress-bar {
                 height: 100%;
-                background: linear-gradient(90deg, var(--primary-color), var(--accent-color));
-                color: var(--bg-dark);
+                background: linear-gradient(90deg, #00ff88, #00ffff);
+                color: #000000;
                 text-align: center;
                 line-height: 30px;
                 font-size: 18px;
@@ -690,6 +688,7 @@ class Summary_Report:
                 transition: width 1s cubic-bezier(0.4, 0, 0.2, 1);
                 position: relative;
                 overflow: hidden;
+                text-shadow: 1px 1px 2px rgba(255, 255, 255, 0.5);
             }
             
             .progress-bar::after {
@@ -701,7 +700,7 @@ class Summary_Report:
                 bottom: 0;
                 background: linear-gradient(90deg, 
                     transparent, 
-                    rgba(255, 255, 255, 0.3), 
+                    rgba(255, 255, 255, 0.4), 
                     transparent
                 );
                 animation: shimmer 2s infinite;
@@ -772,6 +771,8 @@ class Summary_Report:
                 font-size: 1.2em;
                 font-weight: 600;
                 flex: 1;
+                font-family: 'Cascadia Mono', 'Courier New', monospace;
+                letter-spacing: 0.5px;
             }
             
             .card-header i {
@@ -783,8 +784,11 @@ class Summary_Report:
             .card-content {
                 padding: 24px;
                 overflow-y: auto;
+                overflow-x: hidden;
                 flex: 1;
                 font-size: 0.95em;
+                word-wrap: break-word;
+                overflow-wrap: break-word;
             }
             
             .card-content::-webkit-scrollbar {
@@ -809,50 +813,53 @@ class Summary_Report:
                 color: var(--text-primary);
                 line-height: 1.7;
                 font-weight: 400;
+                word-wrap: break-word;
+                overflow-wrap: break-word;
+                white-space: normal;
             }
             
             /* Progress bars inside cards */
             .progress {
-                height: 24px;
-                background: rgba(255, 255, 255, 0.05);
-                border-radius: 6px;
-                overflow: hidden;
-                margin: 8px 0;
-                border: 1px solid var(--border-color);
-            }
-            
-            .progress > div {
+                background: linear-gradient(90deg, #e2bf7d, #e08f24);
                 height: 100%;
-                background: linear-gradient(90deg, var(--primary-color), var(--accent-color));
-                color: var(--bg-dark);
+                color: #000000;
                 text-align: center;
-                line-height: 24px;
-                font-size: 13px;
-                font-weight: 600;
-                transition: width 0.8s ease;
+                line-height: 30px;
+                font-size: 15px;
+                font-weight: 700;
+                transition: width 1s cubic-bezier(0.4, 0, 0.2, 1);
+                position: relative;
+                overflow: hidden;
+                text-shadow: 1px 1px 2px rgba(255, 255, 255, 0.5);
             }
-            
+
             /* Tables */
             .card table {
                 width: 100%;
                 border-collapse: collapse;
+                table-layout: fixed;
             }
             
             .card table td {
                 padding: 12px 8px;
                 border-bottom: 1px solid rgba(255, 255, 255, 0.05);
                 font-size: 0.9em;
+                word-wrap: break-word;
+                overflow-wrap: break-word;
+                white-space: normal;
             }
             
             .card table td:first-child {
                 color: var(--text-secondary);
                 font-weight: 500;
+                width: 35%;
             }
             
             .card table td:last-child {
                 color: var(--text-primary);
                 text-align: right;
                 font-weight: 400;
+                width: 65%;
             }
             
             /* Footer */
@@ -860,15 +867,15 @@ class Summary_Report:
                 background: linear-gradient(135deg, #1a1f35 0%, #0f1420 100%);
                 border: 1px solid var(--border-color);
                 border-radius: 16px;
-                padding: 30px;
-                margin: 30px 20px 20px;
+                padding: 5px;
+                margin: 15px 10px 10px;
                 text-align: center;
                 box-shadow: var(--shadow);
             }
             
             .footer p {
                 color: var(--text-secondary);
-                margin: 8px 0;
+                margin: 4px 0;
                 font-size: 0.95em;
             }
             
@@ -892,6 +899,7 @@ class Summary_Report:
                 color: var(--primary-color);
                 text-decoration: none;
                 transition: all 0.3s ease;
+                word-wrap: break-word;
             }
             
             a:hover {
@@ -963,6 +971,7 @@ class Summary_Report:
     async def light_mode(self):
         CSS = """<style>
             @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
+            @import url('https://fonts.googleapis.com/css2?family=Cascadia+Mono:wght@400;600;700&display=swap');
             
             :root {
                 --primary-color: #0066ff;
@@ -1024,6 +1033,7 @@ class Summary_Report:
                 margin-bottom: 15px;
                 display: flex;
                 align-items: center;
+                justify-content: center;
                 gap: 15px;
             }
             
@@ -1126,7 +1136,7 @@ class Summary_Report:
             
             .progress-bar {
                 height: 100%;
-                background: linear-gradient(90deg, var(--primary-color), var(--accent-color));
+                background: linear-gradient(90deg, #0066ff, #00bcd4);
                 color: white;
                 text-align: center;
                 line-height: 30px;
@@ -1135,6 +1145,7 @@ class Summary_Report:
                 transition: width 1s cubic-bezier(0.4, 0, 0.2, 1);
                 position: relative;
                 overflow: hidden;
+                text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3);
             }
             
             .progress-bar::after {
@@ -1217,6 +1228,8 @@ class Summary_Report:
                 font-size: 1.2em;
                 font-weight: 600;
                 flex: 1;
+                font-family: 'Cascadia Mono', 'Courier New', monospace;
+                letter-spacing: 0.5px;
             }
             
             .card-header i {
@@ -1228,8 +1241,11 @@ class Summary_Report:
             .card-content {
                 padding: 24px;
                 overflow-y: auto;
+                overflow-x: hidden;
                 flex: 1;
                 font-size: 0.95em;
+                word-wrap: break-word;
+                overflow-wrap: break-word;
             }
             
             .card-content::-webkit-scrollbar {
@@ -1254,50 +1270,66 @@ class Summary_Report:
                 color: var(--text-primary);
                 line-height: 1.7;
                 font-weight: 400;
+                word-wrap: break-word;
+                overflow-wrap: break-word;
+                white-space: normal;
             }
             
             /* Progress bars inside cards */
             .progress {
                 height: 24px;
-                background: #f1f5f9;
+                background: linear-gradient(90deg, #00ff88, #00d4ff);
                 border-radius: 6px;
-                overflow: hidden;
-                margin: 8px 0;
+                margin: 1px 0;
                 border: 1px solid var(--border-color);
-            }
-            
-            .progress > div {
-                height: 100%;
-                background: linear-gradient(90deg, var(--success), var(--accent-color));
-                color: white;
+                color: #000;
                 text-align: center;
                 line-height: 24px;
-                font-size: 13px;
-                font-weight: 600;
+                font-size: 15px;
+                font-weight: 700;
                 transition: width 0.8s ease;
+                box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.4);
             }
+            
+            # .progress > div {
+            #     height: 100%;
+            #     background: linear-gradient(90deg, #0066ff, #00bcd4);
+            #     color: white;
+            #     text-align: center;
+            #     line-height: 24px;
+            #     font-size: 13px;
+            #     font-weight: 700;
+            #     transition: width 0.8s ease;
+            #     text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3);
+            # }
             
             /* Tables */
             .card table {
                 width: 100%;
                 border-collapse: collapse;
+                table-layout: fixed;
             }
             
             .card table td {
                 padding: 12px 8px;
                 border-bottom: 1px solid #f1f5f9;
                 font-size: 0.9em;
+                word-wrap: break-word;
+                overflow-wrap: break-word;
+                white-space: normal;
             }
             
             .card table td:first-child {
                 color: var(--text-secondary);
                 font-weight: 500;
+                width: 35%;
             }
             
             .card table td:last-child {
                 color: var(--text-primary);
                 text-align: right;
                 font-weight: 400;
+                width: 65%;
             }
             
             /* Footer */
@@ -1337,6 +1369,7 @@ class Summary_Report:
                 color: var(--primary-color);
                 text-decoration: none;
                 transition: all 0.3s ease;
+                word-wrap: break-word;
             }
             
             a:hover {
@@ -1404,397 +1437,3 @@ class Summary_Report:
             .card:nth-child(6) { animation-delay: 0.3s; }
         </style>"""
         return CSS
-
-    # async def dark_mode(self):
-    #     CSS = """<style>
-    #                     body {
-    #                         background-color: #1e1e1e;
-    #                         color: #d4d4d4;
-    #                         font-family: 'Cascadia Mono', 'Liberation Mono', 'Courier New', Courier, monospace;
-    #                         margin: 0;
-    #                         padding: 0;
-    #                     }
-    #                     .header {
-    #                         background-color: #333;
-    #                         padding: 10px;
-    #                         display: flex;
-    #                         align-items: center;
-    #                         justify-content: space-between;
-    #                         margin-right: 20px;
-    #                         margin-left: 20px;
-    #                         border-radius: 10px;
-    #                     }
-    #                     .header h1 {
-    #                         color: #FFA500;
-    #                         margin: 0;
-    #                         font-size: 2.5em;
-    #                     }
-    #                     .header h2 {
-    #                         color: #FFA500;
-    #                         margin: 0;
-    #                         font-size: 1.5em;
-    #                     }
-    #                     .header h3 {
-    #                         color: #FFA500;
-    #                         margin: 0;
-    #                         font-size: 1em;
-    #                     }
-    #                     .header .icon {
-    #                         color: #ffffff;
-    #                         font-size: 60px;
-    #                     }
-    #                     .ranking-container {
-    #                         background-color: #333;
-    #                         display: flex;
-    #                         align-items: center; /* Vertically align items */
-    #                         justify-content: space-between; /* Space between header and progress bar */
-    #                         margin-right: 20px;
-    #                         margin-left: 20px;
-    #                         border-radius: 10px;
-    #                     }
-    #                     .ranking-container h1 {
-    #                         margin: 20px;
-    #                         padding: 5px;
-    #                         color: #ff00fb;
-    #                     }
-    #                     .ranking-container h2 {
-    #                         font-size: 1.5em;
-    #                         margin: 20px;
-    #                         padding: 5px;
-    #                     }
-    #                     .progress-bar-container {
-    #                         flex: 1; /* Allow progress bar to take available space */
-    #                         background-color: #A9A9A9;
-    #                         border-radius: 4px;
-    #                         margin-left: 20px; /* Space between header and progress bar */
-    #                         margin-right: 20px;
-    #                         overflow: hidden;
-    #                         border-radius: 5px;
-    #                     }
-    #                     .progress-bar {
-    #                         height: 30px;
-    #                         color: #FFFF00;
-    #                         text-align: center;
-    #                         line-height: 30px;
-    #                         border-radius: 3px;
-    #                         background-color: #8F00FF;  /* #76c7c0 Default color, adjust as needed */
-    #                         transition: width 0.5s, background-color 0.5s;
-    #                         font-size: 20px; /* Adjust font size as needed */
-    #                         font-weight: bold; /* Makes the percentage text bold */
-    #                     }
-    #                     .progress {
-    #                         height: 20px;
-    #                         color: red;
-    #                         text-align: center;
-    #                         line-height: 20px;
-    #                         border-radius: 4px;
-    #                         background-color: #FFFF00; /* #76c7c0 Default color, adjust as needed */
-    #                         transition: width 0.5s, background-color 0.5s;
-    #                         font-size: 16px; /* Adjust font size as needed */
-    #                         font-weight: bold; /* Makes the percentage text bold */
-    #                         border-radius: 5px;
-    #                     }
-    #                     .date {
-    #                         padding: 5px;
-    #                         margin-right: 30px;
-    #                     }
-    #                     .date h3 {
-    #                         color: #FFA500;
-    #                         margin: 0;
-    #                         font-size: 1em;
-    #                     }
-    #                     .content h4 {
-    #                         margin: 0;
-    #                         font-size: 0.9em;
-    #                     }
-    #                     .content {
-    #                         display: flex;
-    #                         flex-wrap: wrap;
-    #                         padding: 10px;
-    #                         border-radius: 10px;
-    #                     }
-    #                     .card {
-    #                         background-color: #2d2d2d;
-    #                         margin: 10px;
-    #                         padding: 10px;
-    #                         flex: 1;
-    #                         min-width: 400px;
-    #                         max-width: 200%;
-    #                         border-radius: 5px;
-    #                         position: relative;
-    #                         overflow: hidden;
-    #                         height: 450px; 
-    #                         word-wrap: break-word;
-    #                         border-radius: 10px;
-    #                     }
-    #                     .card-header {
-    #                         position: sticky;
-    #                         background-color: #333;
-    #                         border-radius: 5px;
-    #                         height: 50px;
-    #                         text-align: center; 
-    #                         border-top: 1px solid #333;
-    #                         border-bottom: 0.5px solid #333;
-    #                     }
-    #                     .card-content {
-    #                         max-height: 400px;
-    #                         overflow-y: auto;
-    #                     }
-    #                     .card h2 {
-    #                         color: #FFA500;
-    #                         margin-top: 0;
-    #                     }
-    #                     .card h3 {
-    #                         color: #FFA500;
-    #                         margin-top: 0;
-    #                         font-size: 1em;
-    #                     }
-    #                     .card flag-icon {
-    #                         font-size: 10px; /* Size the flag */
-    #                     }
-    #                     .card .refresh {
-    #                         position: absolute;
-    #                         top: 10px;
-    #                         right: 10px;
-    #                         color: #00FF00;
-    #                         font-size: 30px;
-    #                     }
-    #                     .card table {
-    #                         width: 100%;
-    #                         border-collapse: collapse;
-    #                         table-layout: fixed;
-    #                     }
-    #                     .card table td {
-    #                         padding: 5px;
-    #                         border-bottom: 1px solid #444;
-    #                         text-overflow: ellipsis; 
-    #                         overflow: hidden;
-    #                         word-wrap: break-word;
-    #                     }
-    #                     .card table td:last-child {
-    #                         text-align: right;
-    #                     }
-    #                     .card .map {
-    #                         width: 100%;
-    #                         height: 100px;
-    #                         background: url('https://placehold.co/300x200') no-repeat center center;
-    #                         background-size: cover;
-    #                     }
-    #                     .footer{
-    #                         background-color: #333; 
-    #                         text-align: center; 
-    #                         font-size: 14px; 
-    #                         color: #ddd; 
-    #                         border-top: 1px solid #383434;
-    #                         border-bottom: 1px solid #383434;
-    #                         margin-right: 20px;
-    #                         margin-left: 20px;
-    #                         border-radius: 10px;
-    #                     }
-    #                     .footer h3{
-    #                         display: flex; 
-    #                         flex-end; 
-    #                         align-items: center;
-    #                         color: black;
-    #                     }
-    #                     a {
-    #                         color: #00FF00;
-    #                         text-decoration: none; /* Remove underline */
-    #                     }
-    #                     /* Change color when hovering over the link */
-    #                     a:hover {
-    #                         color: red; /* Change color to red when hovered */
-    #                     }
-    #             </style> """
-    #     return CSS
-
-    # async def light_mode(self):
-    #     CSS = """<style>
-    #             body {
-    #                 background-color: #f9f9f9;
-    #                 color: #1a1a1a;
-    #                 font-family: 'Cascadia Mono', 'Liberation Mono', 'Courier New', Courier, monospace;
-    #                 margin: 0;
-    #                 padding: 0;
-    #             }
-    #             .header {
-    #                 background-color: #ffffff;
-    #                 padding: 10px;
-    #                 display: flex;
-    #                 align-items: center;
-    #                 justify-content: space-between;
-    #                 margin-right: 20px;
-    #                 margin-left: 20px;
-    #                 border-radius: 10px;
-    #                 border: 1px solid #ddd;
-    #             }
-    #             .header h1, .header h2, .header h3 {
-    #                 color: #2c3e50;
-    #                 margin: 0;
-    #             }
-    #             .header h1 { font-size: 2.5em; }
-    #             .header h2 { font-size: 1.5em; }
-    #             .header h3 { font-size: 1em; }
-    #             .header .icon {
-    #                 color: #06334c;
-    #                 font-size: 60px;
-    #             }
-    #             .ranking-container {
-    #                 background-color: #ffffff;
-    #                 display: flex;
-    #                 align-items: center;
-    #                 justify-content: space-between;
-    #                 margin: 20px;
-    #                 border-radius: 10px;
-    #                 border: 1px solid #ddd;
-    #             }
-    #             .ranking-container h1 {
-    #                 margin: 20px;
-    #                 padding: 5px;
-    #                 color: #0f0f10;
-    #             }
-    #             .ranking-container h2 {
-    #                 font-size: 1.5em;
-    #                 margin: 20px;
-    #                 padding: 5px;
-    #             }
-    #             .progress-bar-container {
-    #                 flex: 1;
-    #                 background-color: #e0e0e0;
-    #                 border-radius: 5px;
-    #                 margin-left: 20px;
-    #                 margin-right: 20px;
-    #                 overflow: hidden;
-    #             }
-    #             .progress-bar {
-    #                 height: 30px;
-    #                 color: #fff;
-    #                 text-align: center;
-    #                 line-height: 30px;
-    #                 border-radius: 3px;
-    #                 background-color: #4caf50;
-    #                 transition: width 0.5s, background-color 0.5s;
-    #                 font-size: 20px;
-    #                 font-weight: bold;
-    #             }
-    #             .progress {
-    #                 height: 20px;
-    #                 color: #fff;
-    #                 text-align: center;
-    #                 line-height: 20px;
-    #                 border-radius: 5px;
-    #                 background-color: #515153;
-    #                 transition: width 0.5s, background-color 0.5s;
-    #                 font-size: 16px;
-    #                 font-weight: bold;
-    #             }
-    #             .date {
-    #                 padding: 5px;
-    #                 margin-right: 30px;
-    #             }
-    #             .date h3 {
-    #                 color: #333;
-    #                 margin: 0;
-    #                 font-size: 1em;
-    #             }
-    #             .content h4 {
-    #                 margin: 0;
-    #                 font-size: 0.9em;
-    #             }
-    #             .content {
-    #                 display: flex;
-    #                 flex-wrap: wrap;
-    #                 padding: 10px;
-    #                 border-radius: 10px;
-    #             }
-    #             .card {
-    #                 background-color: #fdfcfc;
-    #                 margin: 10px;
-    #                 padding: 10px;
-    #                 flex: 1;
-    #                 min-width: 400px;
-    #                 max-width: 200%;
-    #                 border-radius: 10px;
-    #                 position: relative;
-    #                 overflow: hidden;
-    #                 height: 450px;
-    #                 word-wrap: break-word;
-    #                 border: 1px solid #ccc;
-    #             }
-    #             .card-header {
-    #                 position: sticky;
-    #                 background-color: #e9e1e1;
-    #                 border-radius: 5px;
-    #                 height: 50px;
-    #                 text-align: center; 
-    #                 border-top: 1px solid #ccc;
-    #                 border-bottom: 0.5px solid #ccc;
-    #             }
-    #             .card-content {
-    #                 max-height: 400px;
-    #                 overflow-y: auto;
-    #             }
-    #             .card h2, .card h3 {
-    #                 color: #0e0e12;
-    #                 margin-bottom: 10px;
-    #                 margin-top: 10px;
-    #             }
-    #             .card h3 {
-    #                 font-size: 1em;
-    #             }
-    #             .card flag-icon {
-    #                 font-size: 10px;
-    #             }
-    #             .card .refresh {
-    #                 position: absolute;
-    #                 top: 10px;
-    #                 right: 10px;
-    #                 color: #388e3c;
-    #                 font-size: 30px;
-    #             }
-    #             .card table {
-    #                 width: 100%;
-    #                 border-collapse: collapse;
-    #                 table-layout: fixed;
-    #             }
-    #             .card table td {
-    #                 padding: 5px;
-    #                 border-bottom: 1px solid #e0e0e0;
-    #                 text-overflow: ellipsis;
-    #                 overflow: hidden;
-    #                 word-wrap: break-word;
-    #             }
-    #             .card table td:last-child {
-    #                 text-align: right;
-    #             }
-    #             .card .map {
-    #                 width: 100%;
-    #                 height: 100px;
-    #                 background: url('https://placehold.co/300x200?text=Map') no-repeat center center;
-    #                 background-size: cover;
-    #             }
-    #             .footer {
-    #                 background-color: #f0f0f0;
-    #                     text-align: center;
-    #                     font-size: 14px;
-    #                     color: #666;
-    #                     border-top: 1px solid #ccc;
-    #                     border-bottom: 1px solid #ccc;
-    #                 margin-right: 20px;
-    #                 margin-left: 20px;
-    #                 border-radius: 10px;
-    #             }
-    #             .footer h3 {
-    #                 display: flex;
-    #                 align-items: center;
-    #                 color: #555;
-    #             }
-    #             a {
-    #                 color: #1e88e5;
-    #                 text-decoration: none;
-    #             }
-    #             a:hover {
-    #                 color: #1565c0;
-    #             }
-    #         </style>"""
-    #     return CSS

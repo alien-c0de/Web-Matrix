@@ -47,7 +47,7 @@ class Mail_Records:
             mx_records = await self.resolver.resolve(domain, 'MX')
             txt_records = await self.resolver.resolve(domain, 'TXT')
         except Exception as e:
-            print(f"DNS Lookup Error: {e}")
+            # print(f"DNS Lookup Error: {e}")
             return None
 
         mx_list = [(mx.exchange.to_text(), mx.preference) for mx in mx_records]
