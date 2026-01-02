@@ -185,16 +185,21 @@ Web Matrix currently supports **36 comprehensive modules**:
 
 ### Terminal Input
 ![Terminal Input](https://github.com/user-attachments/assets/44bf5af3-13aa-4b29-9636-fc3d5010bc3a)
+<img width="802" height="951" alt="Terminal_Input" src="https://github.com/user-attachments/assets/ae576c61-4bdc-4cad-a176-f74b8d85c063" />
 
 *Command-line interface showing the analysis in progress*
 
 ### HTML Summary Report
 ![Summary Report Dashboard](https://github.com/user-attachments/assets/2d1b28cb-9294-472c-9363-5ea33406d3cd)
+<img width="1825" height="964" alt="Summary_Report" src="https://github.com/user-attachments/assets/f7994498-3a91-49a1-9343-81efce8c08c2" />
+
 
 *Professional dashboard with health metrics and module scores*
 
 ### Detailed Analysis Report
 ![Detailed Analysis](https://github.com/user-attachments/assets/7d8bc306-a43f-4714-9140-a6b2b71f3e49)
+
+<img width="1280" height="963" alt="Analysis_report" src="https://github.com/user-attachments/assets/989b8575-4a99-4c3c-9378-db3a18f05269" />
 
 *Comprehensive breakdown of all 36 modules with findings*
 
