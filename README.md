@@ -194,7 +194,7 @@ Web Matrix currently supports **36 comprehensive modules**:
 *Professional dashboard with health metrics and module scores*
 
 ### Detailed Analysis Report
-<img width="1280" height="963" alt="Analysis_report" src="https://github.com/user-attachments/assets/989b8575-4a99-4c3c-9378-db3a18f05269" />
+<img width="1239" height="963" alt="Analysis" src="https://github.com/user-attachments/assets/b932524d-c1b9-4e4f-8850-baf943d46da7" />
 
 *Comprehensive breakdown of all 36 modules with findings*
 
