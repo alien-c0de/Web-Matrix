@@ -88,18 +88,18 @@ async def Main():
             
             # Scan Options
             print(Fore.YELLOW + Style.BRIGHT + "🔍 SCAN OPTIONS:")
-            print(Fore.GREEN + "   -s,  --Single_Site" + Fore.WHITE + "    Analyze single website (standard scan)")
+            print(Fore.GREEN + "   -s,  --scan" + Fore.WHITE + "    Analyze single website (standard scan)")
             print(Fore.WHITE + "                          Example: python main.py -s https://example.com -m 1\n")
             
-            print(Fore.GREEN + "   -sn, --With_NMAP" + Fore.WHITE + "      Analyze with NMAP vulnerability scanning")
+            print(Fore.GREEN + "   -sn, --scan-nmap" + Fore.WHITE + "      Analyze with NMAP vulnerability scanning")
             print(Fore.WHITE + "                          Example: python main.py -sn https://example.com -m 1\n")
             
-            print(Fore.GREEN + "   -md, --Multi_Site" + Fore.WHITE + "     Batch analyze multiple websites from file")
+            print(Fore.GREEN + "   -md, --multi-site" + Fore.WHITE + "     Batch analyze multiple websites from file")
             print(Fore.WHITE + "                          Example: python main.py -md websites.txt\n")
             
             # Display Options
             print(Fore.YELLOW + Style.BRIGHT + "🎨 DISPLAY OPTIONS:")
-            print(Fore.GREEN + "   -m,  --Mode" + Fore.WHITE + "           Select report theme (0=Light, 1=Dark)")
+            print(Fore.GREEN + "   -m,  --mode" + Fore.WHITE + "           Select report theme (0=Light, 1=Dark)")
             print(Fore.WHITE + "                          Example: python main.py -s https://example.com -m 0\n")
             
             # Information

@@ -322,7 +322,7 @@ python main.py -sn https://example.com -m 1
 
 **Typical Duration:** 3 - 9 minutes
 
-⚠️ **Note:** NMAP scanning may require administrator/root privileges
+⚠️ **Note:** NMAP scanning may require administrator/root (sudo) privileges
 
 ### Command-Line Options
 
@@ -332,11 +332,11 @@ usage: main.py [-h] [-s URL] [-sn URL] [-m 1] [-v]
 Web Matrix - Comprehensive Website Security Analysis
 
 optional arguments:
-  -h,        --help           Show this help message and exit
-  -s URL,    --scan URL       Analyze website without NMAP
-  -sn URL,   --scan-nmap URL  Analyze website with NMAP vulnerability scanning
-  -m         --mode 0 or 1    0 for Light and 1 for Dark Mode
-  -v,        --version        Show program version and exit
+  -h,        --help            Show this help message and exit
+  -s  URL,   --scan      URL   Analyze website without NMAP
+  -sn URL,   --scan-nmap URL   Analyze website with NMAP vulnerability scanning
+  -m,        --mode 0 or 1     0 for Light and 1 for Dark Mode
+  -v,        --version         Show program version and exit
 ```
 
 ### Usage Examples
@@ -372,7 +372,7 @@ All reports are generated in the `./output` directory:
 ```
 output/
 ├── WebMatrix_example.com_15Dec2025_14-30-45.html      # Summary Report
-└── Analysis_example.com_15Dec2025_14-30-45.html       # Detailed Report
+└── Analysis_example.com_15Dec2025_14-30-45.html       # Health Analysis Report
 ```
 
 ### Report Structure
@@ -428,10 +428,10 @@ Reports use intuitive color coding:
 | Score Range | Color | Status | Meaning |
 |-------------|-------|--------|---------|
 | 80-100% | 🟢 Green | Excellent | Highly secure, well-configured |
-| 60-79% | 🟡 Yellow | Good | Minor issues, generally secure |
-| 40-59% | 🟠 Orange | Fair | Several issues need attention |
-| 20-39% | 🔴 Red | Poor | Significant security concerns |
-| 0-19% | 🔴 Critical | Critical | Immediate action required |
+| 60-79% | 🟡 Yellow | Moderate | Minor issues, generally secure |
+| 40-59% | 🔴 Red | Poor | Several issues need attention |
+| Below 40% | 🔴 Critical | Critical | Immediate action required |
+
 
 ### Dashboard Features
 
