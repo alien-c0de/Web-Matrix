@@ -184,17 +184,17 @@ Web Matrix currently supports **36 comprehensive modules**:
 ## 📸 Screenshots
 
 ### Terminal Input
-<img width="871" height="963" alt="Terminal" src="https://github.com/user-attachments/assets/d18299a3-ab45-4288-86bc-b547b0148afd" />
+<img width="802" height="951" alt="Terminal_Input" src="https://github.com/user-attachments/assets/ae576c61-4bdc-4cad-a176-f74b8d85c063" />
 
 *Command-line interface showing the analysis in progress*
 
 ### HTML Summary Report
-<img width="1818" height="963" alt="Summary_Repo" src="https://github.com/user-attachments/assets/0a797482-f63e-4991-81e9-b4551dc911b5" />
+<img width="1825" height="964" alt="Summary_Report" src="https://github.com/user-attachments/assets/f7994498-3a91-49a1-9343-81efce8c08c2" />
 
 *Professional dashboard with health metrics and module scores*
 
 ### Detailed Analysis Report
-<img width="1239" height="963" alt="Analysis" src="https://github.com/user-attachments/assets/b932524d-c1b9-4e4f-8850-baf943d46da7" />
+<img width="1280" height="963" alt="Analysis_report" src="https://github.com/user-attachments/assets/989b8575-4a99-4c3c-9378-db3a18f05269" />
 
 *Comprehensive breakdown of all 36 modules with findings*
 
@@ -322,7 +322,7 @@ python main.py -sn https://example.com -m 1
 
 **Typical Duration:** 3 - 9 minutes
 
-⚠️ **Note:** NMAP scanning may require administrator/root privileges
+⚠️ **Note:** NMAP scanning may require administrator/root (sudo) privileges
 
 ### Command-Line Options
 
@@ -332,11 +332,11 @@ usage: main.py [-h] [-s URL] [-sn URL] [-m 1] [-v]
 Web Matrix - Comprehensive Website Security Analysis
 
 optional arguments:
-  -h,        --help           Show this help message and exit
-  -s URL,    --scan URL       Analyze website without NMAP
-  -sn URL,   --scan-nmap URL  Analyze website with NMAP vulnerability scanning
-  -m         --mode 0 or 1    0 for Light and 1 for Dark Mode
-  -v,        --version        Show program version and exit
+  -h,        --help            Show this help message and exit
+  -s  URL,   --scan      URL   Analyze website without NMAP
+  -sn URL,   --scan-nmap URL   Analyze website with NMAP vulnerability scanning
+  -m,        --mode 0 or 1     0 for Light and 1 for Dark Mode
+  -v,        --version         Show program version and exit
 ```
 
 ### Usage Examples
@@ -372,7 +372,7 @@ All reports are generated in the `./output` directory:
 ```
 output/
 ├── WebMatrix_example.com_15Dec2025_14-30-45.html      # Summary Report
-└── Analysis_example.com_15Dec2025_14-30-45.html       # Detailed Report
+└── Analysis_example.com_15Dec2025_14-30-45.html       # Health Analysis Report
 ```
 
 ### Report Structure
@@ -428,10 +428,10 @@ Reports use intuitive color coding:
 | Score Range | Color | Status | Meaning |
 |-------------|-------|--------|---------|
 | 80-100% | 🟢 Green | Excellent | Highly secure, well-configured |
-| 60-79% | 🟡 Yellow | Good | Minor issues, generally secure |
-| 40-59% | 🟠 Orange | Fair | Several issues need attention |
-| 20-39% | 🔴 Red | Poor | Significant security concerns |
-| 0-19% | 🔴 Critical | Critical | Immediate action required |
+| 60-79% | 🟡 Yellow | Moderate | Minor issues, generally secure |
+| 40-59% | 🔴 Red | Poor | Several issues need attention |
+| Below 40% | 🔴 Critical | Critical | Immediate action required |
+
 
 ### Dashboard Features
 
