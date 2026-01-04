@@ -39,7 +39,7 @@ class Analysis_Report:
                                 }
                                 
                                 .container {
-                                    max-width: 1200px;
+                                    max-width: 1400px;
                                     margin: 0 auto;
                                     background: #ffffff;
                                     border-radius: 16px;
@@ -50,7 +50,7 @@ class Analysis_Report:
                                 .header {
                                     background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
                                     color: #ffffff;
-                                    padding: 40px;
+                                    padding: 20px;
                                     position: relative;
                                     overflow: hidden;
                                 }
@@ -91,7 +91,7 @@ class Analysis_Report:
                                 }
                                 
                                 .header h1 {
-                                    font-size: 32px;
+                                    font-size: 36px;
                                     font-weight: 700;
                                     letter-spacing: -0.5px;
                                     margin: 0;
@@ -154,8 +154,8 @@ class Analysis_Report:
                                 .score-section {
                                     background: linear-gradient(135deg, #f7fafc 0%, #edf2f7 100%);
                                     border-radius: 12px;
-                                    padding: 30px;
-                                    margin-bottom: 30px;
+                                    padding: 20px;
+                                    margin-bottom: 20px;
                                     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
                                 }
                                 
@@ -227,8 +227,8 @@ class Analysis_Report:
                                 }
                                 
                                 .score-display {
-                                    margin-top: 25px;
-                                    padding: 25px;
+                                    margin-top: 15px;
+                                    padding: 15px;
                                     border-radius: 12px;
                                     text-align: center;
                                     color: white;

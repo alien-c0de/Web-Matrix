@@ -85,18 +85,23 @@ class Nmap_Ops:
             table = await report_util.Empty_Table(f"Couldn't find any {category} vulnerabilities.", 100)
         else:
             percentage, html = await self.__nmap_score(category, scan_data)
+            
+            # Determine the appropriate colspan based on category
+            # For most vulnerability scans, we use colspan="2" for consistency
+            colspan = "2"
+            
             table_parts = [
-                        '<table>',
-                        '<tr>',
-                        f'<td colspan="2"><div class="progress-bar-container">'
-                        f'<div class="progress" style="width: {percentage}%;">{percentage}%</div></div></td>',
-                        '</tr>'
-                    ]
+                '<table>',
+                '<tr>',
+                f'<td colspan="{colspan}"><div class="progress-bar-container">'
+                f'<div class="progress" style="width: {percentage}%;">{percentage}%</div></div></td>',
+                '</tr>'
+            ]
             
             if category == "port_scan":
                 table_parts.append(
-                    f'<tr><td colspan="2" style="text-align: left;"><h3>Open Ports</h3></td></tr>'
-                    )
+                    f'<tr><td colspan="{colspan}" style="text-align: left;"><h3>Open Ports</h3></td></tr>'
+                )
 
             for data in scan_data:
                 if category == "os_detection":
@@ -109,17 +114,65 @@ class Nmap_Ops:
                             f'<tr><td>{data["port"]}</td><td>{data["service"]}</td></tr>'
                         )
                 else:
+                    # For vulnerability scans, use colspan="2" to match the progress bar
                     table_parts.append(
-                        f'<tr><td colspan="3" style="text-align: left;"><h3>{data["script_id"]}</h3></td></tr>'
-                        f'<tr><td colspan="3" style="text-align: left;">{data["output"]}</td></tr>'
+                        f'<tr><td colspan="{colspan}" style="text-align: left;"><h3>{data["script_id"]}</h3></td></tr>'
+                        f'<tr><td colspan="{colspan}" style="text-align: left;">{data["output"]}</td></tr>'
                     )
 
             table_parts.append("</table>")
-            table = "".join(table_parts)  # Combine all parts into a single string
+            table = "".join(table_parts)
 
-        rep_data.append(table.replace("\n", ""))  # Remove all newline characters
-        rep_data.append(html.replace("\n", ""))   # Ensure the report does not contain newlines
+        rep_data.append(table.replace("\n", ""))
+        rep_data.append(html.replace("\n", ""))
         return rep_data
+
+
+    # async def __html_table(self, category, scan_data):
+    #     rep_data = []
+    #     html = ""
+    #     table_parts = []
+
+    #     if not scan_data:
+    #         report_util = Report_Utility()
+    #         table = await report_util.Empty_Table(f"Couldn't find any {category} vulnerabilities.", 100)
+    #     else:
+    #         percentage, html = await self.__nmap_score(category, scan_data)
+    #         table_parts = [
+    #                     '<table>',
+    #                     '<tr>',
+    #                     f'<td colspan="2"><div class="progress-bar-container">'
+    #                     f'<div class="progress" style="width: {percentage}%;">{percentage}%</div></div></td>',
+    #                     '</tr>'
+    #                 ]
+            
+    #         if category == "port_scan":
+    #             table_parts.append(
+    #                 f'<tr><td colspan="2" style="text-align: left;"><h3>Open Ports</h3></td></tr>'
+    #                 )
+
+    #         for data in scan_data:
+    #             if category == "os_detection":
+    #                 table_parts.append(
+    #                     f'<tr><td>OS Details</td><td>{data["os"]}</td></tr>'
+    #                 )
+    #             elif category == "port_scan":
+    #                 if data["state"].lower() == "open":
+    #                     table_parts.append(
+    #                         f'<tr><td>{data["port"]}</td><td>{data["service"]}</td></tr>'
+    #                     )
+    #             else:
+    #                 table_parts.append(
+    #                     f'<tr><td colspan="3" style="text-align: left;"><h3>{data["script_id"]}</h3></td></tr>'
+    #                     f'<tr><td colspan="3" style="text-align: left;">{data["output"]}</td></tr>'
+    #                 )
+
+    #         table_parts.append("</table>")
+    #         table = "".join(table_parts)  # Combine all parts into a single string
+
+    #     rep_data.append(table.replace("\n", ""))  # Remove all newline characters
+    #     rep_data.append(html.replace("\n", ""))   # Ensure the report does not contain newlines
+    #     return rep_data
 
     async def __nmap_score(self, category, scan_data):
         issues = []
