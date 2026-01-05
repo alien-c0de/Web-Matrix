@@ -9,7 +9,7 @@
 
 Web Matrix is a comprehensive Python-based website analysis tool that uncovers security vulnerabilities, analyzes configurations, and provides actionable insights to optimize your web presence. From SSL certificates to NMAP vulnerability scans, get a complete 360° view of any website's security posture.
 
-[Web Matrix Demo and Reports](https://alien-c0de.github.io/Web-Matrix/)
+[🕸️Web Matrix Demo and Reports](https://alien-c0de.github.io/Web-Matrix/)
 
 ---
 
