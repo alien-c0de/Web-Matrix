@@ -10,7 +10,12 @@
             "request": "launch",
             "program": "${file}",
             "console": "integratedTerminal",
-            "args": ["-s", "https://youbroadband.in", "-m", "0"]
+            "args": [
+                "-s",
+                "https://youbroadband.in",
+                "-m",
+                "1"
+            ]
             // "args": ["-s", "https://heartfulness.org"]
             // "args": ["-s", "https://atos.net"]
         }

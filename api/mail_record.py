@@ -22,16 +22,14 @@ class Mail_Records:
         self.Error_Title = config.MAIL_CONFIGURATION
         output=""
         try:
-            # start_time = perf_counter()
             result = await self.__fetch_dns_records(self.domain)
             output = await self.__html_table(result)
-            # print(f"✅ {config.MODULE_EMAIL_CONFIGURATION} has been successfully completed in {round(perf_counter() - start_time, 2)} seconds.")
             print(f"✅ {config.MODULE_EMAIL_CONFIGURATION} has been successfully completed.")
             return output
 
         except Exception as ex:
             error_type, error_message, tb = ex.__class__.__name__, str(ex), traceback.extract_tb(ex.__traceback__)
-            error_details = tb[-1]  # Get the last traceback entry (most recent call)
+            error_details = tb[-1]
             file_name = error_details.filename
             method_name = error_details.name
             line_number = error_details.lineno
@@ -47,26 +45,92 @@ class Mail_Records:
             mx_records = await self.resolver.resolve(domain, 'MX')
             txt_records = await self.resolver.resolve(domain, 'TXT')
         except Exception as e:
-            # print(f"DNS Lookup Error: {e}")
-            return None
+            print(f"DNS Lookup Error for MX/TXT: {e}")
+            mx_records = []
+            txt_records = []
 
         mx_list = [(mx.exchange.to_text(), mx.preference) for mx in mx_records]
-        txt_list = [txt.to_text() for txt in txt_records]
+        txt_list = [txt.to_text().strip('"') for txt in txt_records]
+
+        # Check for SPF in main domain TXT records
+        spf_record = None
+        for txt in txt_list:
+            if txt.startswith('v=spf1'):
+                spf_record = txt
+                break
+
+        # Check for DMARC record at _dmarc subdomain
+        dmarc_record = None
+        try:
+            dmarc_records = await self.resolver.resolve(f'_dmarc.{domain}', 'TXT')
+            for record in dmarc_records:
+                record_text = record.to_text().strip('"')
+                if record_text.startswith('v=DMARC1'):
+                    dmarc_record = record_text
+                    break
+        except dns.resolver.NXDOMAIN:
+            pass  # Domain doesn't have DMARC - this is normal
+        except dns.resolver.NoAnswer:
+            pass  # No TXT records at _dmarc subdomain
+        except Exception:
+            pass  # Other DNS errors - silently continue
+
+        # Check for DKIM - Try common selectors
+        dkim_record = None
+        common_selectors = ['default', 'google', 'k1', 's1', 's2', 'selector1', 'selector2', 'dkim', 'mail']
+        
+        for selector in common_selectors:
+            try:
+                dkim_records = await self.resolver.resolve(f'{selector}._domainkey.{domain}', 'TXT')
+                for record in dkim_records:
+                    record_text = record.to_text().strip('"')
+                    if 'v=DKIM1' in record_text or 'p=' in record_text:
+                        dkim_record = f"{selector}._domainkey.{domain}: {record_text}"
+                        break
+                if dkim_record:
+                    break
+            except (dns.resolver.NXDOMAIN, dns.resolver.NoAnswer):
+                continue  # Try next selector
+            except Exception:
+                continue  # Try next selector
+
+        # Check for BIMI record at default._bimi subdomain
+        bimi_record = None
+        try:
+            bimi_records = await self.resolver.resolve(f'default._bimi.{domain}', 'TXT')
+            for record in bimi_records:
+                record_text = record.to_text().strip('"')
+                if record_text.startswith('v=BIMI1'):
+                    bimi_record = record_text
+                    break
+        except (dns.resolver.NXDOMAIN, dns.resolver.NoAnswer):
+            pass  # Domain doesn't have BIMI - this is normal (most don't)
+        except Exception:
+            pass  # Other DNS errors - silently continue
 
         # Detecting External Mail Services
         external_services = []
         for mx in mx_list:
-            if "google" in mx[0]:
+            mx_lower = mx[0].lower()
+            if "google" in mx_lower or "gmail" in mx_lower:
                 external_services.append("Google Workspace")
-            elif "outlook" in mx[0] or "office365" in mx[0]:
+            elif "outlook" in mx_lower or "office365" in mx_lower or "microsoft" in mx_lower:
                 external_services.append("Microsoft 365")
-            elif "zoho" in mx[0]:
+            elif "zoho" in mx_lower:
                 external_services.append("Zoho Mail")
+            elif "protonmail" in mx_lower:
+                external_services.append("ProtonMail")
+            elif "mail.protection.outlook.com" in mx_lower:
+                external_services.append("Microsoft 365")
 
         return {
             "mx_records": mx_list,
             "txt_records": txt_list,
-            "external_services": external_services
+            "external_services": list(set(external_services)),  # Remove duplicates
+            "spf_record": spf_record,
+            "dmarc_record": dmarc_record,
+            "dkim_record": dkim_record,
+            "bimi_record": bimi_record
         }
 
     async def __html_table(self, security_info):
@@ -83,71 +147,102 @@ class Mail_Records:
             external_services = security_info['external_services']
             txt_records = security_info['txt_records']
             
-            # Initialize Mail Security Checklist status
-            spf = dkim = dmarc = bimi = "Not Enabled"
-            for txt in txt_records:
-                if txt.startswith('"v=spf1'):
-                    spf = "Enabled"
-                if 'dkim' in txt.lower():
-                    dkim = "Enabled"
-                if 'dmarc' in txt.lower():
-                    dmarc = "Enabled"
-                if 'bimi' in txt.lower():
-                    bimi = "Enabled"
+            # Get security record status
+            spf = "Enabled" if security_info['spf_record'] else "Not Enabled"
+            dkim = "Enabled" if security_info['dkim_record'] else "Not Enabled"
+            dmarc = "Enabled" if security_info['dmarc_record'] else "Not Enabled"
+            bimi = "Enabled" if security_info['bimi_record'] else "Not Enabled"
+            
             percentage, html = await self.__security_score(spf, dkim, dmarc, bimi)
+            
             table = f"""<table>
                             <tr>
-                                <td colspan="3">
+                                <td colspan="2">
                                     <div class="progress-bar-container">
                                         <div class="progress" style="width: {percentage}%;">{percentage}%</div>
                                     </div>
                                 </td>
                             </tr>
                             <tr>
-                                <td colspan="3" style="text-align: left;"><h3>Mail Security Checklist</h3></td>
+                                <td colspan="2" style="text-align: left;"><h3>Mail Security Checklist</h3></td>
                             </tr>
                             <tr>
-                                <td colspan="2" style="text-align: left;">SPF</td>
+                                <td style="text-align: left;">SPF</td>
                                 <td>{"✅ Enabled" if spf == "Enabled" else "❌ Not Enabled"}</td>
                             </tr>
                             <tr>
-                                <td colspan="2" style="text-align: left;">DKIM</td>
+                                <td style="text-align: left;">DKIM</td>
                                 <td>{"✅ Enabled" if dkim  == "Enabled" else "❌ Not Enabled"}</td>
                             </tr>
                             <tr>
-                                <td colspan="2" style="text-align: left;">DMARC</td>
+                                <td style="text-align: left;">DMARC</td>
                                 <td>{"✅ Enabled" if dmarc == "Enabled" else "❌ Not Enabled"}</td>
                             </tr>
                             <tr>
-                                <td colspan="2" style="text-align: left;">BIMI</td>
+                                <td style="text-align: left;">BIMI</td>
                                 <td>{"✅ Enabled" if bimi == "Enabled" else "❌ Not Enabled"}</td>
-                            </tr>
-                            <tr>
-                                <td colspan="3" style="text-align: left;"><h3>MX Records</h3></td>
-                            </tr>
-                        """
+                            </tr>"""
+
+            # Show actual record values if enabled
+            if spf == "Enabled":
+                table += f"""<tr>
+                                <td colspan="2" style="text-align: left; padding-left: 20px;">
+                                    <small style="color: #a8aab7;">{security_info['spf_record'][:100]}...</small>
+                                </td>
+                            </tr>"""
+            
+            if dkim == "Enabled":
+                table += f"""<tr>
+                                <td colspan="2" style="text-align: left; padding-left: 20px;">
+                                    <small style="color: #a8aab7;">{security_info['dkim_record'][:100]}...</small>
+                                </td>
+                            </tr>"""
+            
+            if dmarc == "Enabled":
+                table += f"""<tr>
+                                <td colspan="2" style="text-align: left; padding-left: 20px;">
+                                    <small style="color: #a8aab7;">{security_info['dmarc_record'][:100]}...</small>
+                                </td>
+                            </tr>"""
+            
+            if bimi == "Enabled":
+                table += f"""<tr>
+                                <td colspan="2" style="text-align: left; padding-left: 20px;">
+                                    <small style="color: #a8aab7;">{security_info['bimi_record'][:100]}...</small>
+                                </td>
+                            </tr>"""
+
+            table += """<tr><td colspan="2" style="text-align: left;"><h3>MX Records</h3></td></tr>"""
+            
             # Add MX Records
             if mx_records:
                 for mx in mx_records:
-                    table += f"""<tr><td colspan="2" style="text-align: left;">{mx[0]}</td><td>Priority: {mx[1]}</td></tr>"""
+                    table += f"""<tr><td style="text-align: left;">{mx[0]}</td><td>Priority: {mx[1]}</td></tr>"""
             else:
                 table += """<tr><td colspan="2" style="text-align: left;">No MX records found.</td></tr>"""
 
             # Add External Mail Services
-            table += """<tr><td colspan="3" style="text-align: left;"><h3>External Mail Services</h3></td></tr>"""
+            table += """<tr><td colspan="2" style="text-align: left;"><h3>External Mail Services</h3></td></tr>"""
             if external_services:
                 for service in external_services:
-                    table += f"""<tr><td colspan="2" style="text-align: left;">{service}</td><td>External Mail Provider</td></tr>"""
+                    table += f"""<tr><td style="text-align: left;">{service}</td><td>Detected</td></tr>"""
             else:
-                table += """<tr><td colspan="3" style="text-align: left;">No external mail services detected.</td></tr>"""
+                table += """<tr><td colspan="2" style="text-align: left;">No external mail services detected.</td></tr>"""
 
             # Add Mail-related TXT Records
-            table += """<tr><td colspan="3" style="text-align: left;"><h3>Mail-related TXT Records</h3></td></tr>"""
+            table += """<tr><td colspan="2" style="text-align: left;"><h3>Other TXT Records</h3></td></tr>"""
             if txt_records:
-                for txt in txt_records:
-                    table += f"""<tr><td colspan="3" style="text-align: left;">{txt}</td></tr>"""
+                # Filter out SPF record since we already showed it
+                other_txt = [txt for txt in txt_records if not txt.startswith('v=spf1')]
+                if other_txt:
+                    for txt in other_txt:
+                        # Truncate long records
+                        display_txt = txt[:150] + "..." if len(txt) > 150 else txt
+                        table += f"""<tr><td colspan="2" style="text-align: left;"><small>{display_txt}</small></td></tr>"""
+                else:
+                    table += """<tr><td colspan="2" style="text-align: left;">No additional TXT records found.</td></tr>"""
             else:
-                table += """<tr><td colspan="3" style="text-align: left;">No mail-related TXT records found.</td></tr>"""
+                table += """<tr><td colspan="2" style="text-align: left;">No TXT records found.</td></tr>"""
 
             table += "</table>"
 
