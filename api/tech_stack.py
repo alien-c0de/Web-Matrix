@@ -377,12 +377,12 @@ class Tech_Stack:
 
         # JavaScript Frameworks
         js_frameworks = tech_stack.get('JavaScript Frameworks', 'Not Detected')
-        if js_frameworks != 'Not Detected':
+        if js_frameworks == 'Not Detected':
             issues.append(Issue_Config.ISSUE_TECH_STACK_JS_FRAMEWORK)
             suggestions.append(Issue_Config.SUGGESTION_TECH_STACK_JS_FRAMEWORK)
-            if 'Version Unknown' in js_frameworks or 'Detected' in js_frameworks:
-                issues.append(Issue_Config.ISSUE_TECH_STACK_JS_FRAMEWORK_VER)
-                suggestions.append(Issue_Config.SUGGESTION_TECH_STACK_JS_FRAMEWORK_VER)
+            # if 'Version Unknown' in js_frameworks or 'Detected' in js_frameworks:
+            #     issues.append(Issue_Config.ISSUE_TECH_STACK_JS_FRAMEWORK_VER)
+            #     suggestions.append(Issue_Config.SUGGESTION_TECH_STACK_JS_FRAMEWORK_VER)
         else:
             score += 1
 
