@@ -4,25 +4,26 @@
 # Async HTTP client for API requests
 aiohttp==3.12.15
 requests==2.32.5
-beautifulsoup4=4.13.4
+beautifulsoup4==4.13.4
 
 # Text manipulation 
-configparser=7.2.0
+configparser==7.2.0
+pandas==2.3.2
 
 # PDF generation
 pdfkit==1.0.0
 
 # Terminal colors and styling
 colorama==0.4.6
-pyfiglet=1.0.3
+pyfiglet==1.0.3
 # Additional async support
 asyncio==4.0.0
 
 # Network supprt
-python-whois=0.9.5
-dnspython=2.8.0
-scapy=2.6.1
-pybase64=1.4.3
-tldextract=5.3.0
-pyOpenSSL=25.3.0
-python3-nmap=1.9.1
+python-whois==0.9.5
+dnspython==2.8.0
+scapy==2.6.1
+pybase64==1.4.3
+tldextract==5.3.0
+pyOpenSSL==25.3.0
+python3-nmap==1.9.1
